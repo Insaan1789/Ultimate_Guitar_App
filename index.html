@@ -1014,6 +1014,44 @@
                                 <canvas id="fretboard-canvas" width="800" height="150"></canvas>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <!-- SCALE EXPLORER -->
+                <div id="view-scales" class="explorer-view" style="display:none">
+                    <div class="chord-explorer-container">
+                        <div class="chord-controls">
+                            <div class="control-group">
+                                <label class="info-label">Root</label>
+                                <select id="scale-root" class="tuner-select"></select>
+                            </div>
+                            <div class="control-group">
+                                <label class="info-label">Scale</label>
+                                <select id="scale-type" class="tuner-select"></select>
+                            </div>
+                            <button class="action-btn" id="scale-prev">◀</button>
+                            <span class="info-value" id="scale-pos"
+                                style="min-width:100px; text-align:center; color:#fff;">Pattern 1</span>
+                            <button class="action-btn" id="scale-next">▶</button>
+                        </div>
+
+                        <div class="chord-main-display">
+                            <div class="canvas-container">
+                                <canvas id="scale-fretboard" width="800" height="180"></canvas>
+                            </div>
+
+                            <div class="chord-info-panel">
+                                <div class="info-card">
+                                    <div class="info-label">Notes</div>
+                                    <div class="info-value" id="scale-notes">--</div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-label">Intervals</div>
+                                    <div class="interval-badges" id="scale-intervals"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
             <!-- AI Lab Section -->
             <section id="ai-lab">
@@ -2753,145 +2791,132 @@
         };
 
         const scaleApp = {
-            currentRoot: "C",
-            currentType: "Major",
-            currentPattern: 0, // 0 = Full
-
-            // Practice
-            practiceActive: false,
-            timer: null,
-            timerSecs: 0,
+            root: "C",
+            type: "Major",
+            patternIndex: 0,
 
             init() {
-                this.populateSelectors();
-                this.updateScale();
-            },
+                const rootSel = document.getElementById("scale-root");
+                const typeSel = document.getElementById("scale-type");
 
-            populateSelectors() {
-                const rSel = document.getElementById('scale-root');
-                const tSel = document.getElementById('scale-type');
-                if (!rSel || !tSel) return; // Not active view?
+                if (!rootSel || !typeSel) return;
 
                 CHORD_DATA.ROOTS.forEach(r => {
-                    const opt = document.createElement('option');
-                    opt.value = r; opt.innerText = r;
-                    rSel.appendChild(opt);
+                    const o = document.createElement("option");
+                    o.value = r; o.textContent = r;
+                    rootSel.appendChild(o);
                 });
 
                 Object.keys(SCALE_DATA.TYPES).forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t; opt.innerText = SCALE_DATA.TYPES[t].name;
-                    tSel.appendChild(opt);
+                    const o = document.createElement("option");
+                    o.value = t; o.textContent = t;
+                    typeSel.appendChild(o);
                 });
 
-                rSel.value = this.currentRoot;
-                tSel.value = this.currentType;
+                rootSel.value = this.root;
+                typeSel.value = this.type;
+
+                rootSel.onchange = e => { this.root = e.target.value; this.render(); };
+                typeSel.onchange = e => { this.type = e.target.value; this.render(); };
+
+                document.getElementById("scale-prev").onclick = () => this.shift(-1);
+                document.getElementById("scale-next").onclick = () => this.shift(1);
+
+                this.render();
             },
 
-            setRoot(val) {
-                this.currentRoot = val;
-                this.updateScale();
+            shift(dir) {
+                const max = SCALE_DATA.PATTERNS.length;
+                this.patternIndex = (this.patternIndex + dir + max) % max;
+                this.render();
             },
 
-            setType(val) {
-                this.currentType = val;
-                this.updateScale();
+            render() {
+                const scale = SCALE_DATA.TYPES[this.type];
+                const rootIndex = CHORD_DATA.ROOTS.indexOf(this.root);
+                const notes = scale.intervals.map(i =>
+                    CHORD_DATA.ROOTS[(rootIndex + i) % 12]
+                );
+
+                document.getElementById("scale-notes").innerText = notes.join(" - ");
+                document.getElementById("scale-pos").innerText =
+                    SCALE_DATA.PATTERNS[this.patternIndex].name;
+
+                const badges = document.getElementById("scale-intervals");
+                badges.innerHTML = "";
+                scale.intervals.forEach(i => {
+                    const b = document.createElement("span");
+                    b.className = "badge";
+                    b.textContent = i;
+                    badges.appendChild(b);
+                });
+
+                this.drawFretboard(notes);
             },
 
-            nextPattern() {
-                if (this.currentPattern < SCALE_DATA.PATTERNS.length - 1) {
-                    this.currentPattern++;
-                    this.updateScale();
+            drawFretboard(notes) {
+                const canvas = document.getElementById("scale-fretboard");
+                if (!canvas) return;
+                const ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, 800, 180);
+
+                // BG
+                ctx.fillStyle = "#222";
+                ctx.fillRect(0, 0, 800, 180);
+
+                const strings = ["E", "A", "D", "G", "B", "E"];
+                const frets = 12;
+                const w = 800 / (frets + 1);
+                const h = 180 / strings.length;
+
+                // Grid
+                ctx.strokeStyle = "#444";
+                for (let i = 1; i <= frets; i++) {
+                    ctx.beginPath(); ctx.moveTo(i * w, 0); ctx.lineTo(i * w, 180); ctx.stroke();
                 }
-            },
+                strings.forEach((s, i) => {
+                    ctx.beginPath(); ctx.moveTo(0, i * h + h / 2); ctx.lineTo(800, i * h + h / 2); ctx.stroke();
+                });
 
-            prevPattern() {
-                if (this.currentPattern > 0) {
-                    this.currentPattern--;
-                    this.updateScale();
-                }
-            },
+                // Notes
+                const pattern = SCALE_DATA.PATTERNS[this.patternIndex];
+                const startFret = pattern.min;
+                const endFret = pattern.max;
 
-            updateScale() {
-                // 1. Get Notes
-                const notes = scaleEngine.getNotes(this.currentRoot, this.currentType);
+                strings.forEach((s, si) => { // s=string name, si=string index (0=Bottom visual?)
+                    // My array is [E, A, D, G, B, E]. 0=Low E.
+                    // In canvas, 0 is top.
+                    // If we want standard view, Top is High E.
+                    // So we should iterate reverse or map si to visual y carefully.
+                    // User code: si loops 0..5. h*si.
+                    // "E" at index 0 (Low E) -> 0 * h -> Top?
+                    // Standard tuning array is usually Low to High.
+                    // If si=0 is Low E and y=0 is Top, then Low E is at Top (upside down).
+                    // Let's invert si for Y.
 
-                // 2. Render Info
-                document.getElementById('scale-title').innerText = `${this.currentRoot} ${SCALE_DATA.TYPES[this.currentType].name}`;
-                document.getElementById('scale-notes').innerText = notes.join(' - ');
+                    const y = (5 - si) * h + h / 2; // High E on top
 
-                const intDiv = document.getElementById('scale-intervals');
-                if (intDiv) {
-                    intDiv.innerHTML = '';
-                    scaleEngine.getIntervals(this.currentType).forEach(i => {
-                        const span = document.createElement('span');
-                        span.className = 'badge';
-                        span.innerText = chordEngine.getIntervalName(i);
-                        intDiv.appendChild(span);
-                    });
-                }
+                    for (let f = 0; f <= frets; f++) {
+                        if (f < startFret || f > endFret) continue; // Pattern masking
+                        if (f === 0 && startFret > 0) continue; // Hide open strings if looking up neck? Optional.
 
-                // 3. Render Canvas
-                const canvas = document.getElementById('scale-fretboard');
-                if (canvas) {
-                    const pattern = SCALE_DATA.PATTERNS[this.currentPattern];
-                    document.getElementById('scale-pattern-label').innerText = pattern.name;
+                        const note = CHORD_DATA.ROOTS[
+                            (CHORD_DATA.ROOTS.indexOf(s) + f) % 12
+                        ];
+                        if (notes.includes(note)) {
+                            ctx.beginPath();
+                            ctx.fillStyle = note === this.root ? "#FFAB40" : "#00E676";
+                            ctx.arc(w * f + w / 2, y, 10, 0, Math.PI * 2);
+                            ctx.fill();
 
-                    chordRenderer.drawFretboard(canvas, notes, {
-                        startFret: pattern.min,
-                        endFret: pattern.max
-                    });
-                }
-            },
-
-            togglePractice() {
-                this.practiceActive = !this.practiceActive;
-                const btn = document.getElementById('scale-practice-toggle');
-                const box = document.querySelectorAll('.practice-bar')[1]; // The second one is scales
-
-                if (this.practiceActive) {
-                    if (btn) { btn.innerText = "Stop"; btn.classList.add('active'); }
-                    if (box) box.style.borderColor = '#FF5252';
-                    this.startTimer();
-                    this.randomize();
-                } else {
-                    if (btn) { btn.innerText = "Start Drill"; btn.classList.remove('active'); }
-                    if (box) box.style.borderColor = '#00E676';
-                    this.stopTimer();
-                }
-            },
-
-            startTimer() {
-                this.timerSecs = 0;
-                this.timer = setInterval(() => {
-                    this.timerSecs++;
-                    const m = Math.floor(this.timerSecs / 60).toString().padStart(2, '0');
-                    const s = (this.timerSecs % 60).toString().padStart(2, '0');
-                    const el = document.getElementById('scale-timer');
-                    if (el) el.innerText = `${m}:${s}`;
-
-                    if (this.timerSecs % 7 === 0) { // Slower for scales
-                        this.randomize();
+                            // Text
+                            ctx.fillStyle = "#000";
+                            ctx.font = "10px monospace";
+                            ctx.textAlign = "center";
+                            ctx.fillText(note, w * f + w / 2, y + 3);
+                        }
                     }
-                }, 1000);
-            },
-
-            stopTimer() {
-                clearInterval(this.timer);
-            },
-
-            randomize() {
-                const r = CHORD_DATA.ROOTS[Math.floor(Math.random() * CHORD_DATA.ROOTS.length)];
-                const types = Object.keys(SCALE_DATA.TYPES);
-                const t = types[Math.floor(Math.random() * types.length)];
-
-                this.currentRoot = r;
-                this.currentType = t;
-
-                document.getElementById('scale-root').value = r;
-                document.getElementById('scale-type').value = t;
-
-                this.updateScale();
+                });
             }
         };
 
