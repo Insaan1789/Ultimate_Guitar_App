@@ -477,46 +477,342 @@
             border: none;
             font-weight: 600;
         }
+
+        /* Metronome Styles */
+        .metro-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .beat-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .beat-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--surface-light);
+            transition: background 0.1s;
+        }
+
+        .beat-dot.active {
+            background: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .beat-dot.accent {
+            background: #ff4444;
+            box-shadow: 0 0 15px #ff4444;
+        }
+
+        .bpm-control-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .bpm-display {
+            text-align: center;
+        }
+
+        #bpm-val {
+            display: block;
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .bpm-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .adjust-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            /* Fixed var */
+            border: 1px solid var(--surface-border);
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-wrapper {
+            width: 100%;
+            padding: 0 1rem;
+        }
+
+        #bpm-slider {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        #bpm-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        .metro-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .big-play {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            min-width: 160px;
+        }
+
+        .metro-settings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            background: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        @media (min-width: 768px) {
+            .metro-settings-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent-primary);
+            color: black;
+            border-color: var(--accent-primary);
+        }
+
+        /* =========================================
+           CHORD EXPLORER STYLES
+           ========================================= */
+        .chord-explorer-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .chord-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .chord-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            background: var(--bg-tertiary);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .chord-main-display {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .chord-main-display {
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+            }
+        }
+
+        .canvas-container {
+            background: var(--bg-secondary);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            border: 1px solid var(--surface-border);
+            display: flex;
+            justify-content: center;
+        }
+
+        #chord-canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .chord-info-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            min-width: 250px;
+        }
+
+        .info-card {
+            background: var(--bg-tertiary);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .interval-badges {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: var(--surface-border);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .fretboard-container {
+            overflow-x: auto;
+            background: var(--bg-tertiary);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            margin-top: var(--spacing-md);
+        }
+
+        /* Practice Mode Styles */
+        .practice-bar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-primary);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-lg);
+        }
+
+        .timer-display {
+            font-family: monospace;
+            font-size: 2rem;
+            color: var(--accent-primary);
+        }
+
+        /* v1.1 Search Styles */
+        .chord-search-box {
+            width: 100%;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .chord-search-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            background: var(--bg-primary);
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            transition: border-color 0.2s;
+        }
+
+        .chord-search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        /* Sub Nav */
+        .sub-nav {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--surface-border);
+            padding-bottom: 8px;
+        }
+
+        .sub-nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-family: 'Outfit';
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .sub-nav-btn.active {
+            color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            font-weight: bold;
+        }
+
+        .sub-nav-btn:hover {
+            color: #fff;
+        }
     </style>
 </head>
 
 <body>
-
     <div id="app-container">
         <!-- Navigation -->
         <nav id="main-nav">
             <!-- Desktop Header (Hidden on Mobile via CSS) -->
-            <div class="nav-header" style="display: none;">ULTIMATE GUITAR</div>
-
-            <button class="nav-item" data-target="tools">
-                <span class="nav-icon">🛠️</span>
-                <span class="nav-label">Tools</span>
-            </button>
-            <button class="nav-item" data-target="learn">
-                <span class="nav-icon">🎓</span>
-                <span class="nav-label">Learn</span>
-            </button>
-            <button class="nav-item" data-target="ai-lab">
-                <span class="nav-icon">🤖</span>
-                <span class="nav-label">AI Lab</span>
-            </button>
-            <button class="nav-item" data-target="practice">
-                <span class="nav-icon">🎸</span>
-                <span class="nav-label">Practice</span>
-            </button>
-            <button class="nav-item" data-target="jam">
-                <span class="nav-icon">🎵</span>
-                <span class="nav-label">Jam</span>
-            </button>
-            <button class="nav-item" data-target="profile">
-                <span class="nav-icon">👤</span>
-                <span class="nav-label">Profile</span>
-            </button>
+            <div class="nav-header">ULTIMATE GUITAR</div><button class="nav-item" data-target="tools"><span
+                    class="nav-icon">🛠️</span><span class="nav-label">Tools</span></button><button class="nav-item"
+                data-target="learn"><span class="nav-icon">🎓</span><span class="nav-label">Learn</span></button><button
+                class="nav-item" data-target="ai-lab"><span class="nav-icon">🤖</span><span class="nav-label">AI
+                    Lab</span></button><button class="nav-item" data-target="practice"><span
+                    class="nav-icon">🎸</span><span class="nav-label">Practice</span></button><button class="nav-item"
+                data-target="jam"><span class="nav-icon">🎵</span><span class="nav-label">Jam</span></button><button
+                class="nav-item" data-target="profile"><span class="nav-icon">👤</span><span
+                    class="nav-label">Profile</span></button>
         </nav>
-
         <!-- Main Content Area -->
         <main id="content-area">
-
             <!-- Tools Section (Now contains Sub-Views) -->
             <section id="tools">
                 <!-- Dashboard View -->
@@ -530,7 +826,7 @@
                             <h3>Pro Tuner</h3>
                             <p>High-precision chromatic tuner with alternate tunings.</p>
                         </div>
-                        <div class="card" onclick="audioController.setBPM(120)">
+                        <div class="card" onclick="metronomeApp.open()">
                             <h3>Metronome</h3>
                             <p>Keep flawless time with customizable beats and subdivisions.</p>
                         </div>
@@ -540,64 +836,185 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Tuner View (Hidden by Default) -->
                 <div id="tuner-view" class="hidden">
-                    <div class="tuner-top-bar">
-                        <button class="back-btn" onclick="tunerApp.close()">&#8592;</button>
+                    <div class="tuner-top-bar"><button class="back-btn" onclick="tunerApp.close()">&#8592;
+                        </button>
                         <h2>Pro Tuner</h2>
                     </div>
-
-                    <div class="tuner-controls">
-                        <select id="tuner-instrument" class="tuner-select"
+                    <div class="tuner-controls"><select id="tuner-instrument" class="tuner-select"
                             onchange="tunerApp.setInstrument(this.value)">
                             <!-- Populated by JS -->
-                        </select>
-                        <select id="tuner-tuning" class="tuner-select" onchange="tunerApp.setTuning(this.value)">
+                        </select><select id="tuner-tuning" class="tuner-select"
+                            onchange="tunerApp.setTuning(this.value)">
                             <!-- Populated by JS -->
-                        </select>
-                    </div>
-
+                        </select></div>
                     <div class="tuner-display">
                         <div class="note-name" id="note-display">--</div>
                         <div class="cents-display" id="cents-display">0 cents</div>
-
                         <div class="meter-container">
                             <div class="center-marker"></div>
                             <div class="needle" id="tuner-needle"></div>
                         </div>
                     </div>
-
                     <div class="headstock-container" id="string-selector">
                         <!-- Strings generated by JS -->
                     </div>
-
-                    <div class="tuner-actions">
-                        <button class="action-btn" id="mode-toggle" onclick="tunerApp.toggleMode()">Mode: Auto</button>
-                        <button class="action-btn primary" id="mic-toggle" onclick="tunerApp.toggleMic()">Start
-                            Tuner</button>
+                    <div class="tuner-actions"><button class="action-btn" id="mode-toggle"
+                            onclick="tunerApp.toggleMode()">Mode: Auto</button><button class="action-btn primary"
+                            id="mic-toggle" onclick="tunerApp.toggleMic()">Start Tuner</button></div>
+                </div>
+                <!-- Metronome View (Hidden by Default) -->
+                <div id="metronome-view" class="hidden">
+                    <div class="tuner-top-bar"><button class="back-btn" onclick="metronomeApp.close()">&#8592;
+                        </button>
+                        <h2>Metronome</h2>
+                    </div>
+                    <div class="metro-container">
+                        <!-- Visual Beats -->
+                        <div class="beat-indicators" id="beat-container">
+                            <div class="beat-dot"></div>
+                            <div class="beat-dot"></div>
+                            <div class="beat-dot"></div>
+                            <div class="beat-dot"></div>
+                        </div>
+                        <!-- BPM Display -->
+                        <div class="bpm-control-group"><button class="adjust-btn"
+                                onclick="metronomeApp.adjustBPM(-1)">-</button>
+                            <div class="bpm-display"><span id="bpm-val">120</span><span class="bpm-label">BPM</span>
+                            </div><button class="adjust-btn" onclick="metronomeApp.adjustBPM(1)">+</button>
+                        </div>
+                        <!-- Slider -->
+                        <div class="slider-wrapper"><input type="range" id="bpm-slider" min="30" max="300" value="120"
+                                oninput="metronomeApp.setBPM(this.value)"></div>
+                        <!-- Action Buttons -->
+                        <div class="metro-actions"><button class="action-btn" id="tap-btn"
+                                onclick="metronomeApp.tapTempo()">TAP</button><button
+                                class="action-btn primary big-play" id="metro-toggle"
+                                onclick="metronomeApp.toggle()">START </button>
+                        </div>
+                        <!-- Settings -->
+                        <div class="metro-settings-grid">
+                            <div class="setting-item">
+                                <label>Subdivision</label><select id="metro-subdivision" class="tuner-select"
+                                    onchange="metronomeApp.setSubdivision(this.value)">
+                                    <option value="4">Quarter (1/4)</option>
+                                    <option value="8">Eighth (1/8)</option>
+                                    <option value="12">Triplet (1/3)
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label>Accent</label><button class="tuner-select toggle-btn active"
+                                    id="metro-accent-toggle" onclick="metronomeApp.toggleAccent()">ON
+                                </button>
+                            </div>
+                            <div class="setting-item">
+                                <label>Preset</label><select id="metro-preset" class="tuner-select"
+                                    onchange="metronomeApp.loadPreset(this.value)">
+                                    <option value="default">Default</option>
+                                    <option value="rock">Rock</option>
+                                    <option value="jazz">Jazz</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
-
             <!-- Learn Section -->
             <section id="learn">
                 <header class="section-header">
                     <h1 class="section-title">Learn</h1>
-                    <p class="section-subtitle">Master your instrument with interactive lessons.</p>
+                    <p class="section-subtitle">Master chords, scales, and theory.</p>
                 </header>
-                <div class="card-grid">
-                    <div class="card">
-                        <h3>Beginner Course</h3>
-                        <p>Start your journey from holding the pick to your first song.</p>
-                    </div>
-                    <div class="card">
-                        <h3>Theory 101</h3>
-                        <p>Understand the building blocks of music.</p>
-                    </div>
-                </div>
-            </section>
 
+                <!-- Sub Navigation -->
+                <div class="sub-nav">
+                    <button class="sub-nav-btn active" data-view="chords"
+                        onclick="uiController.switchLearnView('chords')">Chord Explorer</button>
+                    <button class="sub-nav-btn" data-view="scales"
+                        onclick="uiController.switchLearnView('scales')">Scale Explorer</button>
+                </div>
+
+                <!-- CHORD EXPLORER -->
+                <div id="view-chords" class="explorer-view active">
+                    <div class="chord-explorer-container">
+                        <!-- Controls -->
+                        <div class="chord-controls">
+                            <div class="chord-search-box">
+                                <input type="text" id="chord-search" class="chord-search-input"
+                                    placeholder="Search chord (e.g. Cm7, F#maj7, Gsus4)..."
+                                    oninput="chordApp.handleSearch(this.value)">
+                            </div>
+
+                            <div class="control-group">
+                                <label class="info-label">Root</label>
+                                <select id="chord-root" class="tuner-select" onchange="chordApp.setRoot(this.value)">
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label class="info-label">Type</label>
+                                <select id="chord-type" class="tuner-select" onchange="chordApp.setType(this.value)">
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+                            <div style="flex:1;"></div>
+                            <button class="action-btn" onclick="chordApp.prevPosition()"
+                                title="Previous Position">&lt;</button>
+                            <span class="info-value" style="align-self:center;" id="position-indicator">Pos 1/5</span>
+                            <button class="action-btn" onclick="chordApp.nextPosition()"
+                                title="Next Position">&gt;</button>
+                        </div>
+
+                        <!-- Main Display -->
+                        <div class="chord-main-display">
+                            <div class="canvas-container">
+                                <canvas id="chord-box" width="300" height="350"></canvas>
+                            </div>
+
+                            <div class="chord-info-panel">
+                                <div class="info-card">
+                                    <div class="info-label">Notes</div>
+                                    <div class="info-value" id="chord-notes">--</div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-label">Intervals</div>
+                                    <div class="interval-badges" id="chord-intervals">
+                                        <!-- Generated -->
+                                    </div>
+                                    <!-- Practice Component -->
+                                    <div class="practice-bar">
+                                        <div style="flex:1;">
+                                            <div class="info-label">Practice Mode</div>
+                                            <div class="timer-display" id="practice-timer">00:00</div>
+                                            <!-- v1.1 Mode Select -->
+                                            <div style="margin-top:8px; display:flex; gap:8px;">
+                                                <label><input type="radio" name="p-mode" value="drill" checked
+                                                        onchange="chordApp.setPracticeMode('drill')"> Drill
+                                                    (Auto)</label>
+                                                <label><input type="radio" name="p-mode" value="switch"
+                                                        onchange="chordApp.setPracticeMode('switch')"> Switch
+                                                    (Manual)</label>
+                                            </div>
+                                        </div>
+                                        <div
+                                            style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+                                            <button class="action-btn primary" id="practice-toggle"
+                                                onclick="chordApp.togglePractice()">Start</button>
+                                            <button class="action-btn hidden" id="practice-next"
+                                                onclick="chordApp.switchNext()">Done / Next</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fretboard View -->
+                            <div class="fretboard-container">
+                                <canvas id="fretboard-canvas" width="800" height="150"></canvas>
+                            </div>
+                        </div>
+            </section>
             <!-- AI Lab Section -->
             <section id="ai-lab">
                 <header class="section-header">
@@ -615,12 +1032,12 @@
                     </div>
                 </div>
             </section>
-
             <!-- Practice Section -->
             <section id="practice">
                 <header class="section-header">
                     <h1 class="section-title">Practice</h1>
-                    <p class="section-subtitle">Structured routines to build speed and accuracy.</p>
+                    <p class="section-subtitle">Structured routines to build speed and accuracy.
+                    </p>
                 </header>
                 <div class="card-grid">
                     <div class="card">
@@ -633,7 +1050,6 @@
                     </div>
                 </div>
             </section>
-
             <!-- Jam Section -->
             <section id="jam">
                 <header class="section-header">
@@ -647,7 +1063,6 @@
                     </div>
                 </div>
             </section>
-
             <!-- Profile Section -->
             <section id="profile">
                 <header class="section-header">
@@ -661,10 +1076,8 @@
                     </div>
                 </div>
             </section>
-
         </main>
     </div>
-
     <script>
         /**
          * Global State Management
@@ -672,105 +1085,194 @@
         const STATE_KEY = 'ug_app_state';
 
         const DEFAULT_STATE = {
+
             activeTab: 'tools',
-            activeSectionView: 'dashboard', // dashboard or tuner
+            activeSectionView: 'dashboard',
+            // dashboard or tuner
             bpm: 120,
             tuning: 'EADGBE',
             darkMode: true,
             tuner: {
                 instrument: "Guitar",
                 tuningName: "Standard",
+                instrument: "Guitar",
+                tuningName: "Standard",
                 mode: "auto"
             }
-        };
+
+            ,
+            metronome: {
+                bpm: 120,
+                subdivision: 4,
+                accent: true,
+                preset: 'default'
+            }
+        }
+
+            ;
 
         const appState = {
-            data: { ...DEFAULT_STATE },
+            data: {
+                ...DEFAULT_STATE
+            }
+
+            ,
 
             init() {
                 try {
                     const stored = localStorage.getItem(STATE_KEY);
+
                     if (stored) {
-                        this.data = { ...DEFAULT_STATE, ...JSON.parse(stored) };
+                        this.data = {
+                            ...DEFAULT_STATE,
+                            ...JSON.parse(stored)
+                        }
+
+                            ;
                         // Merge nested tuner object if missing (backward compatibility)
                         if (!this.data.tuner) this.data.tuner = DEFAULT_STATE.tuner;
                     }
-                } catch (e) {
+                }
+
+                catch (e) {
                     console.error('State load failed, resetting:', e);
                     this.reset();
                 }
+
                 this.apply();
-            },
+            }
+
+            ,
 
             save() {
                 try {
                     localStorage.setItem(STATE_KEY, JSON.stringify(this.data));
-                } catch (e) {
+                }
+
+                catch (e) {
                     console.error('State save failed:', e);
                 }
-            },
+            }
+
+            ,
 
             setTab(tabId) {
                 this.data.activeTab = tabId;
+
                 // If leaving tools, ensure tuner is closed cleanly
                 if (tabId !== 'tools') {
                     this.data.activeSectionView = 'dashboard';
                     tunerApp.close(false); // Clean close without changing tab
                 }
+
                 this.save();
                 uiController.renderTab(tabId);
-            },
+            }
+
+            ,
 
             reset() {
-                this.data = { ...DEFAULT_STATE };
+                this.data = {
+                    ...DEFAULT_STATE
+                }
+
+                    ;
                 this.save();
                 this.apply();
                 alert('Settings reset to default.');
-            },
+            }
+
+            ,
 
             apply() {
                 uiController.renderTab(this.data.activeTab);
+
                 // Restore Tuner View if that was active
                 if (this.data.activeTab === 'tools' && this.data.activeSectionView === 'tuner') {
                     tunerApp.open(true); // true = skip state save loop
                 }
             }
-        };
+        }
+
+            ;
 
         /**
          * Tuner Data & Logic
          */
         const TUNER_DATA = {
             "Guitar": {
+
                 strings: 6,
-                tunings: [
-                    { name: "Standard", notes: ["E2", "A2", "D3", "G3", "B3", "E4"] },
-                    { name: "Drop D", notes: ["D2", "A2", "D3", "G3", "B3", "E4"] },
-                    { name: "Half-Step Down", notes: ["Eb2", "Ab2", "Db3", "Gb3", "Bb3", "Eb4"] }
-                ]
-            },
-            "Bass": {
-                strings: 4,
-                tunings: [
-                    { name: "Standard", notes: ["E1", "A1", "D2", "G2"] },
-                    { name: "Drop D", notes: ["D1", "A1", "D2", "G2"] }
-                ]
-            },
-            "Ukulele": {
-                strings: 4,
-                tunings: [
-                    { name: "Standard (GCEA)", notes: ["G4", "C4", "E4", "A4"] }
-                ]
-            },
-            "Violin": {
-                strings: 4,
-                tunings: [
-                    { name: "Standard", notes: ["G3", "D4", "A4", "E5"] }
+                tunings: [{
+                    name: "Standard", notes: ["E2", "A2", "D3", "G3", "B3", "E4"]
+                }
+
+                    ,
+                {
+                    name: "Drop D", notes: ["D2", "A2", "D3", "G3", "B3", "E4"]
+                }
+
+                    ,
+                {
+                    name: "Half-Step Down", notes: ["Eb2", "Ab2", "Db3", "Gb3", "Bb3", "Eb4"]
+                }
+
                 ]
             }
-        };
 
-        const NOTE_STRINGS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+            ,
+            "Bass": {
+
+                strings: 4,
+                tunings: [{
+                    name: "Standard", notes: ["E1", "A1", "D2", "G2"]
+                }
+
+                    ,
+                {
+                    name: "Drop D", notes: ["D1", "A1", "D2", "G2"]
+                }
+
+                ]
+            }
+
+            ,
+            "Ukulele": {
+
+                strings: 4,
+                tunings: [{
+                    name: "Standard (GCEA)", notes: ["G4", "C4", "E4", "A4"]
+                }
+
+                ]
+            }
+
+            ,
+            "Violin": {
+
+                strings: 4,
+                tunings: [{
+                    name: "Standard", notes: ["G3", "D4", "A4", "E5"]
+                }
+
+                ]
+            }
+        }
+
+            ;
+
+        const NOTE_STRINGS = ["C",
+            "C#",
+            "D",
+            "D#",
+            "E",
+            "F",
+            "F#",
+            "G",
+            "G#",
+            "A",
+            "A#",
+            "B"];
 
         /**
          * Migrated Tuner Engine
@@ -787,23 +1289,11 @@
                 silenceRMS: 0.015
             },
 
-            // State
             audioContext: null,
             analyser: null,
             microphone: null,
             isActive: false,
-            rafId: null,
-
-            // Logic State
-            currentString: "AUTO", // or specific note "E2"
-            currentRMS: 0,
-
-            // Smoothing
-            currentNeedleAngle: 0,
-            targetNeedleAngle: 0,
-            lastFrameTime: 0,
-
-            // Data Implants
+            currentString: 'AUTO',
             guitarStrings: {
                 'E2': { freq: 82.41, min: 70, max: 95 },
                 'A2': { freq: 110.00, min: 95, max: 125 },
@@ -813,17 +1303,26 @@
                 'E4': { freq: 329.63, min: 300, max: 360 }
             },
 
+            // NOTE DATA
             NOTE_NAMES: ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"],
+
+            rafId: null,
+            lastFrameTime: 0,
+            currentRMS: 0,
 
             async start() {
                 if (this.isActive) return;
+
                 try {
                     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    if (this.audioContext.state === 'suspended') {
+                        await this.audioContext.resume();
+                    }
 
                     this.analyser = this.audioContext.createAnalyser();
                     this.analyser.fftSize = 2048;
 
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     this.microphone = this.audioContext.createMediaStreamSource(stream);
                     this.microphone.connect(this.analyser);
 
@@ -832,8 +1331,11 @@
                     this.updateLoop();
 
                     // UI Hook
-                    document.getElementById('mic-toggle').innerText = "Stop Tuner";
-                    document.getElementById('mic-toggle').classList.add('active');
+                    const btn = document.getElementById('mic-toggle');
+                    if (btn) {
+                        btn.innerText = "Stop Tuner";
+                        btn.classList.add('active');
+                    }
                 } catch (e) {
                     console.error("Mic Error:", e);
                     alert("Unable to access microphone. Please allow permissions.");
@@ -846,28 +1348,46 @@
 
                 if (this.rafId) cancelAnimationFrame(this.rafId);
                 if (this.microphone) this.microphone.disconnect();
-                if (this.audioContext && this.audioContext.state !== 'closed') this.audioContext.close();
+                if (this.audioContext && this.audioContext.state !== 'closed') {
+                    this.audioContext.close();
+                }
 
                 this.isActive = false;
                 this.audioContext = null;
 
                 // UI Hook
-                document.getElementById('mic-toggle').innerText = "Start Tuner";
-                document.getElementById('mic-toggle').classList.remove('active');
-                tunerApp.updateDisplay(null, 0);
+                const btn = document.getElementById('mic-toggle');
+                if (btn) {
+                    btn.innerText = "Start Tuner";
+                    btn.classList.remove('active');
+                }
+
+                // Reset Display
+                this.onUpdate({ note: null, octave: null, cents: 0 });
             },
 
             setMode(mode) {
-                // 'auto' or 'manual' handled by setTarget essentially
-                if (mode === 'auto') this.currentString = "AUTO";
+                if (mode === 'auto') {
+                    this.currentString = 'AUTO';
+                }
+                // Manual mode 'target' is set via setTarget
             },
 
             setTarget(note) {
                 this.currentString = note;
-                // If it's a new note not in our map (custom tuning), generated it
+
+                // If note not in known strings (custom), generate it
                 if (note !== 'AUTO' && !this.guitarStrings[note]) {
                     const f = this.getNoteFreq(note);
+                    // Approx +/- 15% window
                     this.guitarStrings[note] = { freq: f, min: f * 0.85, max: f * 1.15 };
+                }
+            },
+
+            onUpdate(data) {
+                // Connect to App UI
+                if (typeof tunerApp !== 'undefined') {
+                    tunerApp.updateDisplay(data.note, data.octave, data.cents);
                 }
             },
 
@@ -895,10 +1415,9 @@
 
             processPitch(frequency, dt) {
                 if (frequency === -1) {
-                    // Holding logic or reset? 
-                    // Let's reset display if silent for a bit
+                    // Silence / Noise Gate
                     if (this.currentRMS < this.config.silenceRMS) {
-                        tunerApp.updateDisplay(null, 0, 0);
+                        this.onUpdate({ note: null, octave: null, cents: 0 });
                     }
                     return;
                 }
@@ -922,25 +1441,36 @@
                     // Manual Locking
                     const s = this.guitarStrings[this.currentString];
                     if (s) {
-                        targetFreq = s.freq;
-                        noteName = this.currentString.replace(/\d/, '');
-                        octave = this.currentString.slice(-1);
-                        centDiff = this.calculateCents(frequency, targetFreq);
-                        isValid = true;
+                        // Strict Window Check
+                        if (frequency >= s.min && frequency <= s.max) {
+                            targetFreq = s.freq;
+                            noteName = this.currentString.replace(/\d/, '');
+                            octave = this.currentString.slice(-1);
+                            centDiff = this.calculateCents(frequency, targetFreq);
+                            isValid = true;
+                        }
                     }
                 }
 
                 if (isValid) {
-                    tunerApp.updateDisplay(noteName, octave, Math.round(centDiff));
+                    this.onUpdate({
+                        note: noteName,
+                        octave: octave,
+                        cents: Math.round(centDiff),
+                        frequency: frequency
+                    });
                 }
             },
 
             detectNote(freq) {
                 let closest = null;
                 let minDiff = Infinity;
+
                 for (const [note, data] of Object.entries(this.guitarStrings)) {
                     // Optimization: check range first
-                    if (freq >= data.min && freq <= data.max) return { note, freq: data.freq };
+                    if (freq >= data.min && freq <= data.max) {
+                        return { note, freq: data.freq };
+                    }
 
                     const diff = Math.abs(freq - data.freq);
                     if (diff < minDiff) {
@@ -956,12 +1486,15 @@
                 if (!match) return 0;
                 let note = match[1];
                 const octave = parseInt(match[2]);
+
                 const flatToSharp = { "Eb": "D#", "Ab": "G#", "Bb": "A#", "Db": "C#", "Gb": "F#" };
                 if (flatToSharp[note]) note = flatToSharp[note];
+
                 const noteIndex = this.NOTE_NAMES.indexOf(note);
-                const a4Index = 57; // A4 (9 + 4*12)
+                const a4Index = 57; // A4 (Index 57)
                 const thisIndex = octave * 12 + noteIndex;
-                return 440 * Math.pow(2, (thisIndex - a4Index) / 12);
+                const diff = thisIndex - a4Index;
+                return 440 * Math.pow(2, diff / 12);
             },
 
             calculateCents(current, target) {
@@ -971,32 +1504,51 @@
             autoCorrelate(buf, sampleRate, precalcRMS) {
                 if (precalcRMS < this.config.silenceRMS) return -1;
 
-                // Window
-                let r1 = 0, r2 = buf.length - 1, thres = 0.2;
-                for (let i = 0; i < buf.length / 2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; }
-                for (let i = 1; i < buf.length / 2; i++) if (Math.abs(buf[buf.length - i]) < thres) { r2 = buf.length - i; break; }
+                // Windowing (trim silence)
+                let r1 = 0;
+                let r2 = buf.length - 1;
+                const thres = 0.2;
+
+                for (let i = 0; i < buf.length / 2; i++) {
+                    if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+                }
+                for (let i = 1; i < buf.length / 2; i++) {
+                    if (Math.abs(buf[buf.length - i]) < thres) { r2 = buf.length - i; break; }
+                }
+
                 const buf2 = buf.slice(r1, r2);
                 const c = new Array(buf2.length).fill(0);
 
                 // Autocorrelation
                 for (let offset = 30; offset < 800; offset++) {
                     let corr = 0;
-                    for (let i = 0; i < buf2.length - offset; i++) corr += buf2[i] * buf2[i + offset];
+                    for (let i = 0; i < buf2.length - offset; i++) {
+                        corr += buf2[i] * buf2[i + offset];
+                    }
                     c[offset] = corr;
                 }
 
                 // Peak finding
-                let d = 0; while (c[d] > c[d + 1]) d++;
-                let maxval = -1, maxpos = -1;
+                let d = 0;
+                while (c[d] > c[d + 1]) d++;
+                let maxval = -1;
+                let maxpos = -1;
+
                 for (let i = d; i < c.length; i++) {
-                    if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+                    if (c[i] > maxval) {
+                        maxval = c[i];
+                        maxpos = i;
+                    }
                 }
+
                 let T0 = maxpos;
 
-                // Interpolation
-                let x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
-                let a = (x1 + x3 - 2 * x2) / 2;
-                let b = (x3 - x1) / 2;
+                // Parabolic Interpolation
+                const x1 = c[T0 - 1];
+                const x2 = c[T0];
+                const x3 = c[T0 + 1];
+                const a = (x1 + x3 - 2 * x2) / 2;
+                const b = (x3 - x1) / 2;
                 if (a) T0 = T0 - b / (2 * a);
 
                 return sampleRate / T0;
@@ -1020,7 +1572,9 @@
 
                 this.populateInstruments();
                 this.setInstrument(appState.data.tuner.instrument || "Guitar", true);
-            },
+            }
+
+            ,
 
             close(saveState = true) {
                 tunerEngine.stop();
@@ -1031,28 +1585,40 @@
                     appState.data.activeSectionView = 'dashboard';
                     appState.save();
                 }
-            },
+            }
+
+            ,
 
             toggleMic() {
                 if (tunerEngine.isActive) tunerEngine.stop();
                 else tunerEngine.start();
-            },
+            }
+
+            ,
 
             toggleMode() {
                 this.mode = this.mode === 'auto' ? 'manual' : 'auto';
-                document.getElementById('mode-toggle').innerText = `Mode: ${this.mode.charAt(0).toUpperCase() + this.mode.slice(1)}`;
+
+                document.getElementById('mode-toggle').innerText = `Mode: ${this.mode.charAt(0).toUpperCase() + this.mode.slice(1)
+                    }
+
+                `;
                 appState.data.tuner.mode = this.mode;
                 appState.save();
 
                 tunerEngine.setMode(this.mode);
+
                 if (this.mode === 'auto') {
                     this.renderStrings();
                 }
-            },
+            }
+
+            ,
 
             populateInstruments() {
                 const select = document.getElementById('tuner-instrument');
                 select.innerHTML = '';
+
                 Object.keys(TUNER_DATA).forEach(inst => {
                     const opt = document.createElement('option');
                     opt.value = inst;
@@ -1060,7 +1626,9 @@
                     select.appendChild(opt);
                 });
                 select.value = appState.data.tuner.instrument;
-            },
+            }
+
+            ,
 
             setInstrument(name, forceInit = false) {
                 if (!TUNER_DATA[name]) return;
@@ -1073,6 +1641,7 @@
                 // Populate Tunings
                 const tuningSelect = document.getElementById('tuner-tuning');
                 tuningSelect.innerHTML = '';
+
                 TUNER_DATA[name].tunings.forEach((t, index) => {
                     const opt = document.createElement('option');
                     opt.value = index;
@@ -1082,7 +1651,9 @@
 
                 // Default to first tuning or saved
                 this.setTuning(0);
-            },
+            }
+
+            ,
 
             setTuning(index) {
                 const tuningData = TUNER_DATA[this.currentInstrument].tunings[index];
@@ -1094,7 +1665,9 @@
 
                 // Setup Engine targets (pre-calc if needed, though SetTarget handles it on demand)
                 this.renderStrings();
-            },
+            }
+
+            ,
 
             renderStrings() {
                 const container = document.getElementById('string-selector');
@@ -1113,7 +1686,9 @@
 
                     container.appendChild(btn);
                 });
-            },
+            }
+
+            ,
 
             selectString(note, btnEl) {
                 if (this.mode !== 'manual') this.toggleMode();
@@ -1122,7 +1697,9 @@
                 // Update UI
                 document.querySelectorAll('.string-btn').forEach(b => b.classList.remove('active'));
                 btnEl.classList.add('active');
-            },
+            }
+
+            ,
 
             updateDisplay(note, octave, cents) {
                 const noteEl = document.getElementById('note-display');
@@ -1138,13 +1715,30 @@
                     return;
                 }
 
-                noteEl.innerHTML = `${note}<span class="octave">${octave}</span>`;
-                centerEl.innerText = `${cents > 0 ? '+' : ''}${cents} cents`;
+                noteEl.innerHTML = `${note
+                    }
+
+                <span class="octave">${octave
+                    }
+
+                </span>`;
+
+                centerEl.innerText = `${cents > 0 ? '+' : ''
+                    }
+
+                ${cents
+                    }
+
+                cents`;
 
                 // Calculate visual position
                 const clampedCents = Math.max(-50, Math.min(50, cents));
                 const percent = 50 + clampedCents;
-                needleEl.style.left = `${percent}%`;
+
+                needleEl.style.left = `${percent
+                    }
+
+                %`;
 
                 // Color States
                 needleEl.className = 'needle';
@@ -1153,33 +1747,523 @@
                 if (Math.abs(cents) <= 5) {
                     needleEl.classList.add('in-tune');
                     noteEl.classList.add('in-tune');
-                } else if (cents > 5) {
+                }
+
+                else if (cents > 5) {
                     needleEl.classList.add('sharp');
                     noteEl.classList.add('sharp');
-                } else {
+                }
+
+                else {
                     needleEl.classList.add('flat');
                     noteEl.classList.add('flat');
                 }
             }
-        };
+        }
+
+            ;
+
+        /**
+         * Metronome Engine
+         * Uses Web Audio API with Lookahead Scheduling
+         */
+        const metronomeEngine = {
+            audioContext: null,
+            nextNoteTime: 0.0,
+            timerID: null,
+            lookahead: 25.0,
+            // ms
+            scheduleAheadTime: 0.1,
+            // s
+            queue: [],
+            // For visuals
+
+            // State
+            isPlaying: false,
+            bpm: 120,
+            subdivision: 4,
+            // 4 = quarter, 8 = eighth, 12 = triplet
+            accent: true,
+            beatCount: 0,
+
+            // Current Rhythm Config
+            notesPerBeat: 1,
+
+            init() {
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    this.audioContext = new AudioContext();
+                }
+
+                catch (e) {
+                    console.warn('Web Audio API not supported', e);
+                }
+            }
+
+            ,
+
+            start() {
+                if (this.isPlaying) return;
+                if (!this.audioContext) this.init();
+                if (this.audioContext.state === 'suspended') this.audioContext.resume();
+
+                this.isPlaying = true;
+                this.beatCount = 0;
+                this.nextNoteTime = this.audioContext.currentTime + 0.1;
+                this.scheduler();
+            }
+
+            ,
+
+            stop() {
+                this.isPlaying = false;
+                window.clearTimeout(this.timerID);
+            }
+
+            ,
+
+            scheduler() {
+
+                // While there are notes that will play between now and next interval
+                while (this.nextNoteTime < this.audioContext.currentTime + this.scheduleAheadTime) {
+                    this.scheduleNote(this.beatCount, this.nextNoteTime);
+                    this.nextNote(); // Advance time
+                }
+
+                if (this.isPlaying) {
+                    this.timerID = window.setTimeout(() => this.scheduler(), this.lookahead);
+                }
+            }
+
+            ,
+
+            scheduleNote(beatNumber, time) {
+                if (!this.audioContext) return;
+
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+
+                osc.connect(gain);
+                gain.connect(this.audioContext.destination);
+
+                const maxBeats = this.getMaxBeats();
+                // Accent logic: first beat of the bar
+                // beatNumber resets every bar (e.g. 0-3 for quarter 4/4)
+                const isAccent = (beatNumber % maxBeats === 0) && this.accent;
+
+                // Sound Design
+                if (isAccent) {
+                    osc.frequency.value = 1000;
+                    gain.gain.value = 0.8;
+                }
+
+                else if (beatNumber % this.notesPerBeat === 0) {
+                    // Main Beat (Non-accent)
+                    osc.frequency.value = 800;
+                    gain.gain.value = 0.6;
+                }
+
+                else {
+                    // Subdivision click
+                    osc.frequency.value = 600;
+                    gain.gain.value = 0.3;
+                }
+
+                // Short, percussive envelope
+                gain.gain.setValueAtTime(gain.gain.value, time);
+                gain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
+
+                osc.start(time);
+                osc.stop(time + 0.05);
+
+                // Queue for Visuals
+                this.queue.push({
+                    note: beatNumber, time: time, isAccent: isAccent
+                });
+            }
+
+            ,
+
+            nextNote() {
+                // Advance time by a note length
+                const secondsPerBeat = 60.0 / this.bpm;
+
+                // Modifier based on subdivision
+                // Quarter (4) = 1.0 * secondsPerBeat
+                // Eighth (8) = 0.5 * secondsPerBeat
+                // Triplet (12) = 0.333 * secondsPerBeat
+                let modifier = 1;
+                if (this.subdivision == 8) modifier = 0.5;
+                if (this.subdivision == 12) modifier = 1 / 3;
+
+                this.nextNoteTime += secondsPerBeat * modifier;
+
+                this.beatCount++;
+
+                /* 
+                       We don't necessarily reset beatCount here if we want continuous counting, 
+                       but strictly resetting helps keeping accent logic simple: 0 is always accent.
+                    */
+                if (this.beatCount >= this.getMaxBeats()) {
+                    this.beatCount = 0;
+                }
+            }
+
+            ,
+
+            getMaxBeats() {
+                // 4/4 Time Signature baseline
+                if (this.subdivision == 4) return 4;
+                if (this.subdivision == 8) return 8;
+                if (this.subdivision == 12) return 12;
+                return 4;
+            }
+
+            ,
+
+            // Helper to set config
+            setConfig(bpm, sub, accent) {
+                this.bpm = bpm;
+                this.subdivision = parseInt(sub);
+                this.accent = accent;
+
+                if (this.subdivision == 4) this.notesPerBeat = 1;
+                if (this.subdivision == 8) this.notesPerBeat = 2;
+                if (this.subdivision == 12) this.notesPerBeat = 3;
+            }
+        }
+
+            ;
+
+        const metronomeApp = {
+            tapHistory: [],
+            lastTapTime: 0,
+            rafId: null,
+
+            open() {
+                // Ensure Tuner view is closed properly if switching direct (though UI handles via dashboard)
+                tunerApp.close(false);
+
+                document.getElementById('tools-dashboard').classList.add('hidden');
+                document.getElementById('metronome-view').classList.remove('hidden');
+
+                appState.data.activeSectionView = 'metronome';
+                appState.save();
+
+                // Load State
+                const state = appState.data.metronome || {
+                    bpm: 120, subdivision: 4, accent: true, preset: 'default'
+                }
+
+                    ;
+                this.setBPM(state.bpm || 120, false);
+                this.setSubdivision(state.subdivision || 4);
+                this.setAccent(state.accent !== undefined ? state.accent : true);
+
+                // Preset Select Update
+                const presetSel = document.getElementById('metro-preset');
+                if (presetSel && state.preset) presetSel.value = state.preset;
+
+                this.updateUI();
+                this.animationLoop();
+            }
+
+            ,
+
+            close(saveState = true) {
+                metronomeEngine.stop();
+                cancelAnimationFrame(this.rafId);
+
+                document.getElementById('metronome-view').classList.add('hidden');
+                document.getElementById('tools-dashboard').classList.remove('hidden');
+
+                if (saveState) {
+                    appState.data.activeSectionView = 'dashboard';
+                    appState.save();
+                }
+
+                this.updateUI();
+            }
+
+            ,
+
+            toggle() {
+                if (metronomeEngine.isPlaying) {
+                    metronomeEngine.stop();
+                }
+
+                else {
+                    // Start
+                    metronomeEngine.start();
+                }
+
+                this.updateUI();
+            }
+
+            ,
+
+            setBPM(val, save = true) {
+                let bpm = parseInt(val);
+                if (isNaN(bpm)) bpm = 120;
+                if (bpm < 30) bpm = 30;
+                if (bpm > 300) bpm = 300;
+
+                metronomeEngine.bpm = bpm;
+
+                const valEl = document.getElementById('bpm-val');
+                const sliderEl = document.getElementById('bpm-slider');
+                if (valEl) valEl.innerText = bpm;
+                if (sliderEl) sliderEl.value = bpm;
+
+                if (save) {
+                    this.saveState({
+                        bpm: bpm
+                    });
+                }
+            }
+
+            ,
+
+            adjustBPM(delta) {
+                const current = metronomeEngine.bpm;
+                this.setBPM(current + delta);
+            }
+
+            ,
+
+            tapTempo() {
+                const now = performance.now();
+
+                if (now - this.lastTapTime > 2000) {
+                    this.tapHistory = [];
+                }
+
+                this.lastTapTime = now;
+                this.tapHistory.push(now);
+
+                if (this.tapHistory.length > 5) this.tapHistory.shift();
+
+                if (this.tapHistory.length >= 2) {
+                    let sum = 0;
+
+                    for (let i = 1; i < this.tapHistory.length; i++) {
+                        sum += this.tapHistory[i] - this.tapHistory[i - 1];
+                    }
+
+                    const avgMs = sum / (this.tapHistory.length - 1);
+                    const bpm = Math.round(60000 / avgMs);
+                    this.setBPM(bpm);
+                }
+            }
+
+            ,
+
+            setSubdivision(val) {
+                const sub = parseInt(val);
+                metronomeEngine.subdivision = sub;
+                metronomeEngine.setConfig(metronomeEngine.bpm, sub, metronomeEngine.accent);
+
+                // UI Update
+                const sel = document.getElementById('metro-subdivision');
+                if (sel) sel.value = sub;
+
+                this.saveState({
+                    subdivision: sub
+                });
+            }
+
+            ,
+
+            toggleAccent() {
+                this.setAccent(!metronomeEngine.accent);
+            }
+
+            ,
+
+            setAccent(isOn) {
+                metronomeEngine.accent = isOn;
+                metronomeEngine.setConfig(metronomeEngine.bpm, metronomeEngine.subdivision, isOn);
+
+                const btn = document.getElementById('metro-accent-toggle');
+
+                if (btn) {
+                    btn.innerText = isOn ? "ON" : "OFF";
+                    btn.classList.toggle('active', isOn);
+                }
+
+                this.saveState({
+                    accent: isOn
+                });
+            }
+
+            ,
+
+            loadPreset(name) {
+                let preset = {
+                    bpm: 120, subdivision: 4, accent: true
+                }
+
+                    ;
+
+                if (name === 'rock') preset = {
+                    bpm: 120, subdivision: 4, accent: true
+                }
+
+                    ; // 4/4 
+
+                else if (name === 'jazz') preset = {
+                    bpm: 130, subdivision: 12, accent: false
+                }
+
+                    ; // Swing/Triplet
+
+                this.setBPM(preset.bpm);
+                this.setSubdivision(preset.subdivision);
+                this.setAccent(preset.accent);
+
+                this.saveState({
+                    preset: name
+                });
+            }
+
+            ,
+
+            saveState(updates) {
+                if (!appState.data.metronome) appState.data.metronome = {}
+
+                    ;
+                Object.assign(appState.data.metronome, updates);
+                appState.save();
+            }
+
+            ,
+
+            updateUI() {
+                const btn = document.getElementById('metro-toggle');
+
+                if (btn) {
+                    if (metronomeEngine.isPlaying) {
+                        btn.innerHTML = "&#9632; STOP";
+                        btn.classList.add('active'); // CSS can style .active red if needed
+                    }
+
+                    else {
+                        btn.innerHTML = "&#9658; START";
+                        btn.classList.remove('active');
+                    }
+                }
+            }
+
+            ,
+
+            animationLoop() {
+                if (document.getElementById('metronome-view').classList.contains('hidden')) return;
+
+                const draw = () => {
+                    const ctx = metronomeEngine.audioContext;
+
+                    if (!ctx) {
+                        this.rafId = requestAnimationFrame(draw);
+                        return;
+                    }
+
+                    const currentTime = ctx.currentTime;
+
+                    // Process queue
+                    while (metronomeEngine.queue.length && metronomeEngine.queue[0].time < currentTime) {
+                        const event = metronomeEngine.queue.shift();
+
+                        // Allow a small window for visual sync, otherwise discard old events
+                        if (currentTime - event.time < 0.2) {
+                            this.flashBeat(event);
+                        }
+                    }
+
+                    this.rafId = requestAnimationFrame(draw);
+                }
+
+                    ;
+                this.rafId = requestAnimationFrame(draw);
+            }
+
+            ,
+
+            flashBeat(event) {
+                // Determine which dot to flash
+                const dots = document.querySelectorAll('.beat-dot');
+                if (dots.length === 0) return;
+
+                // Index logic:
+                // We want to map note index to 0..3 
+                // e.g. 4/4 Quarter: 0,1,2,3 -> 0,1,2,3
+                // 4/4 Eighth: 0,1,2,3,4,5,6,7 -> 0,0, 1,1, 2,2, 3,3 ? 
+                // OR sequential: 0,1,2,3, 0,1,2,3.
+                // Let's go with sequential beat mapping (Measure progress)
+
+                const notesPerBeat = metronomeEngine.notesPerBeat;
+                const mainBeat = Math.floor(event.note / notesPerBeat);
+
+                // Reset all first
+                dots.forEach(d => {
+                    d.classList.remove('active'); d.classList.remove('accent');
+                });
+
+                const dot = dots[mainBeat % 4];
+
+                if (dot) {
+                    if (event.isAccent) dot.classList.add('accent');
+                    else dot.classList.add('active');
+
+                    // Clear after 100ms
+                    setTimeout(() => {
+                        dot.classList.remove('active');
+                        dot.classList.remove('accent');
+                    }
+
+                        , 100);
+                }
+            }
+        }
+
+            ;
 
         /**
          * Global Audio Controller (Modified for Tuner access)
          */
         const audioController = {
-            startMic() { tunerApp.toggleMic(); },
-            stopMic() { tunerEngine.stop(); },
+            startMic() {
+                metronomeApp.close(false); // Stop metronome
+                tunerApp.toggleMic();
+            }
+
+            ,
+            stopMic() {
+                tunerEngine.stop();
+                metronomeEngine.stop();
+            }
+
+            ,
             playSound() {
                 console.log('Audio: Playing generic sound');
                 alert('Audio Stub: *Beep*');
-            },
-            stopSound() { console.log('Audio: Sound stopped'); },
-            setBPM(bpm) {
-                appState.data.bpm = bpm;
-                appState.save();
-                alert(`BPM set to ${bpm}`);
             }
-        };
+
+            ,
+            stopSound() {
+                console.log('Audio: Sound stopped');
+            }
+
+            ,
+            setBPM(bpm) {
+                // Legacy stub replacement
+                metronomeApp.setBPM(bpm);
+                metronomeApp.open(); // Auto open if called externally
+            }
+        }
+
+            ;
+
+        ;
 
         /**
          * UI Controller
@@ -1188,11 +2272,13 @@
             init() {
                 // Setup Navigation Listeners
                 const navItems = document.querySelectorAll('.nav-item');
+
                 navItems.forEach(item => {
                     item.addEventListener('click', (e) => {
                         // Find closest button in case user clicked icon/span
                         const btn = e.target.closest('.nav-item');
                         const target = btn.dataset.target;
+
                         if (target) {
                             appState.setTab(target);
                         }
@@ -1204,7 +2290,23 @@
                 window.addEventListener('resize', () => this.handleResize());
             },
 
+            // New switchLearnView helper
+            switchLearnView(viewName) {
+                // 1. Buttons
+                document.querySelectorAll('.sub-nav-btn').forEach(b => {
+                    b.classList.toggle('active', b.dataset.view === viewName);
+                });
+
+                // 2. Sections
+                document.querySelectorAll('.explorer-view').forEach(v => {
+                    v.style.display = (v.id === `view-${viewName}`) ? 'block' : 'none';
+                });
+            }
+
+            ,
+
             renderTab(tabId) {
+
                 // 1. Update Buttons
                 document.querySelectorAll('.nav-item').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.target === tabId);
@@ -1213,35 +2315,872 @@
                 // 2. Update Sections
                 const sections = document.querySelectorAll('section');
                 let found = false;
+
                 sections.forEach(sec => {
                     if (sec.id === tabId) {
                         sec.classList.add('active');
                         found = true;
-                    } else {
+                    }
+
+                    else {
                         sec.classList.remove('active');
                     }
                 });
 
                 // Error Handling for missing section
                 if (!found) {
-                    console.warn(`Section #${tabId} not found, falling back to tools.`);
+                    console.warn(`Section #${tabId
+                        }
+
+                        not found, falling back to tools.`);
                     if (tabId !== 'tools') appState.setTab('tools');
                 }
-            },
+            }
+
+            ,
 
             handleResize() {
                 const isDesktop = window.innerWidth >= 768;
                 const header = document.querySelector('.nav-header');
                 if (header) header.style.display = isDesktop ? 'block' : 'none';
             }
-        };
+        }
+
+            ;
 
         /**
          * Boot
          */
+        /**
+         * =========================================
+         * CHORD & SCALE SYSTEM LOGIC
+         * =========================================
+         */
+        const SCALE_DATA = {
+            TYPES: {
+                "Major": { name: "Major", intervals: [0, 2, 4, 5, 7, 9, 11] },
+                "Natural Minor": { name: "Natural Minor", intervals: [0, 2, 3, 5, 7, 8, 10] },
+                "Pentatonic Major": { name: "Major Pentatonic", intervals: [0, 2, 4, 7, 9] },
+                "Pentatonic Minor": { name: "Minor Pentatonic", intervals: [0, 3, 5, 7, 10] },
+                "Blues": { name: "Blues", intervals: [0, 3, 5, 6, 7, 10] },
+                "Harmonic Minor": { name: "Harmonic Minor", intervals: [0, 2, 3, 5, 7, 8, 11] },
+                "Melodic Minor": { name: "Melodic Minor", intervals: [0, 2, 3, 5, 7, 9, 11] }
+            },
+            // Simple Pattern Ranges for V1 (based on typical CAGED positioning for C Major)
+            // Ideally this would be dynamic per Root, but for V1 we just use generic visual blocks
+            // or we use a "Relative to Root" system?
+            // Let's implement a simple "Fret Window" system for patterns.
+            PATTERNS: [
+                { name: "Full Neck", min: 0, max: 12 },
+                { name: "Pattern 1", min: 0, max: 4 },   // Open position
+                { name: "Pattern 2", min: 3, max: 7 },
+                { name: "Pattern 3", min: 5, max: 9 },
+                { name: "Pattern 4", min: 7, max: 11 },
+                { name: "Pattern 5", min: 10, max: 14 }
+            ]
+        };
+
+        const CHORD_DATA = {
+            ROOTS: ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"],
+
+            // Interval formulas (semitones from root)
+            TYPES: {
+                "Major": { name: "Major", intervals: [0, 4, 7] },
+                "Minor": { name: "Minor", intervals: [0, 3, 7] },
+                "7": { name: "Dominant 7", intervals: [0, 4, 7, 10] },
+                "Maj7": { name: "Major 7", intervals: [0, 4, 7, 11] },
+                "m7": { name: "Minor 7", intervals: [0, 3, 7, 10] },
+                "sus2": { name: "Sus2", intervals: [0, 2, 7] },
+                "sus4": { name: "Sus4", intervals: [0, 5, 7] },
+                "dim": { name: "Diminished", intervals: [0, 3, 6] },
+                "aug": { name: "Augmented", intervals: [0, 4, 8] }
+            },
+
+            // Movable Shapes (Base definitions)
+            // relative: offsets from the Root Note on a specific string
+            SHAPES: {
+                "Major": [
+                    { rootString: 6, offsets: [0, 2, 2, 1, 0, 0] }, // E-shape
+                    { rootString: 5, offsets: [-1, 0, 2, 2, 2, 0] }, // A-shape
+                    { rootString: 4, offsets: [-1, -1, 0, 2, 3, 2] } // D-shape
+                ],
+                "Minor": [
+                    { rootString: 6, offsets: [0, 2, 2, 0, 0, 0] }, // Em-shape
+                    { rootString: 5, offsets: [-1, 0, 2, 2, 1, 0] }, // Am-shape
+                    { rootString: 4, offsets: [-1, -1, 0, 2, 3, 1] } // Dm-shape
+                ],
+                "7": [
+                    { rootString: 6, offsets: [0, 2, 0, 1, 0, 0] }, // E7
+                    { rootString: 5, offsets: [-1, 0, 2, 0, 2, 0] } // A7
+                ],
+                "Maj7": [
+                    { rootString: 6, offsets: [0, -1, 1, 1, 0, -1] }, // Emaj7ish (Shell) - simpler: 6th string root shell
+                    { rootString: 5, offsets: [-1, 0, 2, 1, 2, 0] } // Amaj7
+                ],
+                "m7": [
+                    { rootString: 6, offsets: [0, -1, 0, 0, 0, 0] }, // Em7
+                    { rootString: 5, offsets: [-1, 0, 2, 0, 1, 0] } // Am7
+                ],
+                // Fallbacks can be added or procedurally generated, keeping it simple for V1
+                "sus2": [{ rootString: 4, offsets: [-1, -1, 0, 2, 3, 0] }], // Dsus2
+                "sus4": [{ rootString: 4, offsets: [-1, -1, 0, 2, 3, 3] }], // Dsus4
+                "dim": [{ rootString: 5, offsets: [-1, 0, 1, 2, -1, -1] }], // Adim (roughly)
+                "aug": [{ rootString: 6, offsets: [0, -1, 2, 1, 1, -1] }]  // Eaug
+            }
+        };
+
+        const chordEngine = {
+            getNoteName(index) {
+                return CHORD_DATA.ROOTS[index % 12];
+            },
+
+            getNoteIndex(name) {
+                const map = {
+                    "C": 0, "C#": 1, "Db": 1, "D": 2, "D#": 3, "Eb": 3,
+                    "E": 4, "F": 5, "F#": 6, "Gb": 6, "G": 7, "G#": 8, "Ab": 8,
+                    "A": 9, "A#": 10, "Bb": 10, "B": 11
+                };
+                return map[name];
+            },
+
+            // Generate the theoretical notes of the chord
+            // Generate the theoretical notes of the chord
+            getChordNotes(root, type) {
+                const rootIdx = this.getNoteIndex(root);
+                const intervals = CHORD_DATA.TYPES[type].intervals;
+                return intervals.map(interval => this.getNoteName(rootIdx + interval));
+            },
+
+            getIntervalName(semitones) {
+                const names = {
+                    0: "R", 1: "b2", 2: "2", 3: "b3", 4: "3", 5: "4",
+                    6: "b5", 7: "5", 8: "b6", 9: "6", 10: "b7", 11: "7"
+                };
+                return names[semitones % 12] || "?";
+            },
+
+            // Determine fret positions for a given Root + Type
+            getPositions(root, type) {
+                const positions = [];
+                const shapes = CHORD_DATA.SHAPES[type] || CHORD_DATA.SHAPES["Major"]; // Fallback to Major if missing
+
+                const rootVal = this.getNoteIndex(root);
+
+                shapes.forEach(shape => {
+                    // Find the fret of the Root Note on the shape's rootString
+                    // Standard Tuning: E2 A2 D3 G3 B3 E4
+                    // String Indices (0-5): E A D G B E
+                    // Base Offsets: E=0, A=5, D=10, G=15, B=19, E=24 (relative to low E)
+                    // Let's use simple string open note indices:
+                    const stringOpenIndices = [4, 9, 2, 7, 11, 4]; // E A D G B E
+
+                    const openNoteIndex = stringOpenIndices[shape.rootString - 1]; // 1-based string to array
+
+                    // Calculate fret needed to hit the Target Root on this string
+                    // target = current + fret
+                    // fret = target - current
+                    let fretDelta = rootVal - openNoteIndex;
+                    if (fretDelta < 0) fretDelta += 12; // Wrap around
+
+                    // Apply this delta to the shape's relative offsets
+                    const absoluteFrets = shape.offsets.map(offset => {
+                        if (offset === -1) return -1; // Mute stays mute
+                        return offset + fretDelta;
+                    });
+
+                    // Check playability (e.g. not above fret 15 for now)
+                    if (absoluteFrets.some(f => f > 15)) return;
+
+                    positions.push({
+                        frets: absoluteFrets,
+                        baseFret: Math.min(...absoluteFrets.filter(f => f > 0)) || 1
+                    });
+                });
+
+                return positions;
+            }
+        }
+
+        const scaleEngine = {
+            getNotes(root, type) {
+                // Same logic as chords, different intervals
+                const rootIdx = chordEngine.getNoteIndex(root);
+                const intervals = SCALE_DATA.TYPES[type].intervals;
+                return intervals.map(i => chordEngine.getNoteName(rootIdx + i));
+            },
+
+            getIntervals(type) {
+                return SCALE_DATA.TYPES[type].intervals;
+            }
+        };
+
+        const chordRenderer = {
+            drawBox(canvas, position) {
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width;
+                const h = canvas.height;
+
+                // Clear
+                ctx.fillStyle = '#1E1E1E'; // var(--bg-secondary)
+                ctx.fillRect(0, 0, w, h);
+
+                const padding = 40;
+                const boxW = w - padding * 2;
+                const boxH = h - 100;
+                const startY = 60;
+
+                // Determine Fret Range
+                // If baseFret is high (e.g. 5), we show frets 5-9.
+                // If baseFret is 1, we show 1-5 (and draw nut).
+                let startFret = position.baseFret;
+                if (startFret === 0) startFret = 1;
+
+                // Logic: If the chord has open strings (0), typically we show from fret 1.
+                // If lowest fingered fret is 5, we show 5.
+                const minFingered = Math.min(...position.frets.filter(f => f > 0));
+                // If min fingered is > 0, we generally want that to be the top (or top-1)
+                // But simplified: 
+                const renderStartFret = (minFingered > 3) ? minFingered : 1;
+
+                // Draw Strings (Vertical)
+                ctx.strokeStyle = '#888';
+                ctx.lineWidth = 2;
+                for (let i = 0; i < 6; i++) {
+                    const x = padding + (i * (boxW / 5));
+                    ctx.beginPath();
+                    ctx.moveTo(x, startY);
+                    ctx.lineTo(x, startY + boxH);
+                    ctx.stroke();
+                }
+
+                // Draw Frets (Horizontal)
+                const numFrets = 5;
+                for (let i = 0; i <= numFrets; i++) {
+                    const y = startY + (i * (boxH / numFrets));
+                    ctx.beginPath();
+                    ctx.moveTo(padding, y);
+                    ctx.lineTo(padding + boxW, y);
+                    ctx.stroke();
+                }
+
+                // Draw Nut (if startFret == 1)
+                if (renderStartFret === 1) {
+                    ctx.lineWidth = 8;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, startY);
+                    ctx.lineTo(padding + boxW, startY);
+                    ctx.stroke();
+                }
+
+                // Draw Dots & Indicators (X/O)
+                position.frets.forEach((fret, stringIdx) => {
+                    const x = padding + (stringIdx * (boxW / 5)); // Low E is index 0 here? 
+                    // Let's standard: String 6 (E) is usually Left in diagrams.
+                    // My arrays are [E, A, D, G, B, E]. Index 0 i S6. Correct.
+
+                    if (fret === -1) {
+                        // Draw X
+                        ctx.fillStyle = '#FF5252';
+                        ctx.font = '20px Outfit';
+                        ctx.fillText('✕', x - 6, startY - 10);
+                    } else if (fret === 0) {
+                        // Draw O
+                        ctx.fillStyle = '#fff';
+                        ctx.font = '20px Outfit';
+                        ctx.fillText('○', x - 6, startY - 10);
+                    } else {
+                        // Draw Dot
+                        // Calculate relative fret position
+                        const relFret = fret - renderStartFret + 1;
+                        if (relFret >= 1 && relFret <= 5) {
+                            const y = startY + ((relFret - 0.5) * (boxH / numFrets));
+
+                            ctx.fillStyle = '#00E676';
+                            ctx.beginPath();
+                            ctx.arc(x, y, 12, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            // Finger hint (optional, skipped for now)
+                        }
+                    }
+                });
+
+                // Draw Fret Number Label
+                if (renderStartFret > 0) {
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '24px Outfit';
+                    // v1.1 Fix: Anchor Top Left
+                    ctx.fillText(renderStartFret + 'fr', padding - 35, startY + 40);
+                }
+            },
+
+            drawFretboard(canvas, chordNotes, options = {}) {
+                // Options: { startFret: 0, endFret: 12, highlightRoot: true }
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width;
+                const h = canvas.height;
+
+                const startFret = options.startFret || 0;
+                const endFret = options.endFret || 12;
+                const fretCount = endFret - startFret + 1; // e.g. 0-12 = 13 slots
+
+                // Background
+                ctx.fillStyle = '#1A1A1A'; // Darker wood
+                ctx.fillRect(0, 0, w, h);
+
+                const fretW = w / fretCount;
+                const stringH = h / 6;
+
+                // Frets
+                ctx.strokeStyle = '#555';
+                for (let i = 0; i < fretCount; i++) {
+                    const actualFret = startFret + i;
+                    // Don't draw line for Nut if startFret is 0 (handled differently or implicit left edge)
+                    if (actualFret > 0) {
+                        const x = i * fretW;
+                        // For Nut (0), usually we draw a Thick line at x=0? 
+                        // If startFret=0, index 0 is the "Nut Area". The line for Fret 1 is at index 1 * fretW.
+                        // Wait, index i is the space BEFORE fret i+1?
+                        // Let's stick to standard: The vertical line IS the fret wire.
+                        // Fret 1 wire is at x = 1 * fretW.
+                    }
+
+                    const x = (i + 1) * fretW; // Fret Wire
+                    if (i < fretCount - 1) { // Don't draw last edge?
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, h);
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    }
+                }
+
+                // Draw Nut if visible
+                if (startFret === 0) {
+                    ctx.fillStyle = '#333';
+                    ctx.fillRect(0, 0, 8, h); // Nut
+                }
+
+                // Strings
+                const stringColors = ['#e6c181', '#a8d8ea', '#aaeea', '#e6c181', '#a8d8ea', '#e6c181']; // Just styling
+                for (let i = 0; i < 6; i++) {
+                    const y = (i * stringH) + (stringH / 2);
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(w, y);
+                    ctx.strokeStyle = '#888';
+                    ctx.lineWidth = 1 + (i * 0.5); // Thicker low strings
+                    ctx.stroke();
+                }
+
+                // Inlays
+                const inlays = [3, 5, 7, 9, 12];
+                ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                inlays.forEach(f => {
+                    const x = (f * fretW) - (fretW / 2);
+                    ctx.beginPath();
+                    ctx.arc(x, h / 2, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                    if (f === 12) {
+                        ctx.beginPath();
+                        ctx.arc(x + 15, h / 2, 6, 0, Math.PI * 2); // Double dot? simple is fine
+                        ctx.fill();
+                    }
+                });
+
+                // Highlight Notes
+                // Brute force: check every string/fret
+                const stringOpens = [4, 9, 2, 7, 11, 4]; // E A D G B E
+
+                for (let s = 0; s < 6; s++) {
+                    // Strings are E2...E4
+                    for (let i = 0; i < fretCount; i++) {
+                        const actualFret = startFret + i;
+                        const noteVal = stringOpens[s] + actualFret;
+                        const noteName = chordEngine.getNoteName(noteVal);
+
+                        // Check if this note is in our chord
+                        if (chordNotes.includes(noteName)) {
+                            // Centered in the fret slot
+                            // Slot x range: i*fretW to (i+1)*fretW
+                            // Center: (i + 0.5) * fretW
+
+                            // Nut Adjustment: if startFret=0 and actualFret=0, it's just left of Fret 1 wire.
+                            // Logic works fine.
+
+                            const x = (i + 0.5) * fretW;
+
+                            const y = ((5 - s) * stringH) + (stringH / 2); // Reverse string order for visual (Top is E4 usually? No, Top is E2 in tabs. Fretboard Top is E4/High E)
+                            // Standard Fretboard view: High E on top.
+                            // My loops: s=0 is E2 (Low).
+                            // Screen Y: 0 is top.
+                            // So s=0 should be Bottom (Height). layout: 5 is High E.
+                            const visualY = ((5 - s) * stringH) + (stringH / 2);
+
+                            // v1.1 Highlight Root
+                            const isRoot = (noteName === chordNotes[0]);
+
+                            ctx.beginPath();
+                            ctx.arc(x, visualY, 10, 0, Math.PI * 2);
+
+                            if (isRoot) {
+                                ctx.fillStyle = '#FFAB40'; // v1.1 Root Orange
+                                ctx.shadowBlur = 10;
+                                ctx.shadowColor = '#FFAB40';
+                            } else {
+                                ctx.fillStyle = '#00E676'; // Normal Green
+                                ctx.shadowBlur = 0;
+                            }
+
+                            ctx.fill();
+                            ctx.shadowBlur = 0; // Reset
+
+                            // Text
+                            ctx.fillStyle = isRoot ? '#000' : '#000';
+                            ctx.font = '700 10px Outfit';
+                            ctx.textAlign = 'center';
+                            ctx.fillText(noteName, x, visualY + 3);
+                        }
+                    }
+                }
+
+                // Range Label
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.font = '16px Outfit';
+                ctx.textAlign = 'right';
+                // ctx.fillText(`Frets ${startFret}-${endFret}`, w - 10, h - 10);
+            }
+        };
+
+        const scaleApp = {
+            currentRoot: "C",
+            currentType: "Major",
+            currentPattern: 0, // 0 = Full
+
+            // Practice
+            practiceActive: false,
+            timer: null,
+            timerSecs: 0,
+
+            init() {
+                this.populateSelectors();
+                this.updateScale();
+            },
+
+            populateSelectors() {
+                const rSel = document.getElementById('scale-root');
+                const tSel = document.getElementById('scale-type');
+                if (!rSel || !tSel) return; // Not active view?
+
+                CHORD_DATA.ROOTS.forEach(r => {
+                    const opt = document.createElement('option');
+                    opt.value = r; opt.innerText = r;
+                    rSel.appendChild(opt);
+                });
+
+                Object.keys(SCALE_DATA.TYPES).forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t; opt.innerText = SCALE_DATA.TYPES[t].name;
+                    tSel.appendChild(opt);
+                });
+
+                rSel.value = this.currentRoot;
+                tSel.value = this.currentType;
+            },
+
+            setRoot(val) {
+                this.currentRoot = val;
+                this.updateScale();
+            },
+
+            setType(val) {
+                this.currentType = val;
+                this.updateScale();
+            },
+
+            nextPattern() {
+                if (this.currentPattern < SCALE_DATA.PATTERNS.length - 1) {
+                    this.currentPattern++;
+                    this.updateScale();
+                }
+            },
+
+            prevPattern() {
+                if (this.currentPattern > 0) {
+                    this.currentPattern--;
+                    this.updateScale();
+                }
+            },
+
+            updateScale() {
+                // 1. Get Notes
+                const notes = scaleEngine.getNotes(this.currentRoot, this.currentType);
+
+                // 2. Render Info
+                document.getElementById('scale-title').innerText = `${this.currentRoot} ${SCALE_DATA.TYPES[this.currentType].name}`;
+                document.getElementById('scale-notes').innerText = notes.join(' - ');
+
+                const intDiv = document.getElementById('scale-intervals');
+                if (intDiv) {
+                    intDiv.innerHTML = '';
+                    scaleEngine.getIntervals(this.currentType).forEach(i => {
+                        const span = document.createElement('span');
+                        span.className = 'badge';
+                        span.innerText = chordEngine.getIntervalName(i);
+                        intDiv.appendChild(span);
+                    });
+                }
+
+                // 3. Render Canvas
+                const canvas = document.getElementById('scale-fretboard');
+                if (canvas) {
+                    const pattern = SCALE_DATA.PATTERNS[this.currentPattern];
+                    document.getElementById('scale-pattern-label').innerText = pattern.name;
+
+                    chordRenderer.drawFretboard(canvas, notes, {
+                        startFret: pattern.min,
+                        endFret: pattern.max
+                    });
+                }
+            },
+
+            togglePractice() {
+                this.practiceActive = !this.practiceActive;
+                const btn = document.getElementById('scale-practice-toggle');
+                const box = document.querySelectorAll('.practice-bar')[1]; // The second one is scales
+
+                if (this.practiceActive) {
+                    if (btn) { btn.innerText = "Stop"; btn.classList.add('active'); }
+                    if (box) box.style.borderColor = '#FF5252';
+                    this.startTimer();
+                    this.randomize();
+                } else {
+                    if (btn) { btn.innerText = "Start Drill"; btn.classList.remove('active'); }
+                    if (box) box.style.borderColor = '#00E676';
+                    this.stopTimer();
+                }
+            },
+
+            startTimer() {
+                this.timerSecs = 0;
+                this.timer = setInterval(() => {
+                    this.timerSecs++;
+                    const m = Math.floor(this.timerSecs / 60).toString().padStart(2, '0');
+                    const s = (this.timerSecs % 60).toString().padStart(2, '0');
+                    const el = document.getElementById('scale-timer');
+                    if (el) el.innerText = `${m}:${s}`;
+
+                    if (this.timerSecs % 7 === 0) { // Slower for scales
+                        this.randomize();
+                    }
+                }, 1000);
+            },
+
+            stopTimer() {
+                clearInterval(this.timer);
+            },
+
+            randomize() {
+                const r = CHORD_DATA.ROOTS[Math.floor(Math.random() * CHORD_DATA.ROOTS.length)];
+                const types = Object.keys(SCALE_DATA.TYPES);
+                const t = types[Math.floor(Math.random() * types.length)];
+
+                this.currentRoot = r;
+                this.currentType = t;
+
+                document.getElementById('scale-root').value = r;
+                document.getElementById('scale-type').value = t;
+
+                this.updateScale();
+            }
+        };
+
+        const chordApp = {
+            currentRoot: "C",
+            currentType: "Major",
+            currentPosIndex: 0,
+            positions: [],
+
+            // Practice State
+            practiceActive: false,
+            practiceMode: 'drill', // drill | switch
+            timer: null,
+            timerSecs: 0,
+            switchTarget: null,
+            stats: { total: 0, correct: 0 },
+
+            init() {
+                this.populateSelectors();
+
+                // Load state
+                const saved = appState.data.chord || {};
+                if (saved.root) this.currentRoot = saved.root;
+                if (saved.type) this.currentType = saved.type;
+
+                this.updateChord();
+            },
+
+            populateSelectors() {
+                const rSel = document.getElementById('chord-root');
+                const tSel = document.getElementById('chord-type');
+                if (!rSel || !tSel) return;
+
+                CHORD_DATA.ROOTS.forEach(r => {
+                    const opt = document.createElement('option');
+                    opt.value = r; opt.innerText = r;
+                    rSel.appendChild(opt);
+                });
+
+                Object.keys(CHORD_DATA.TYPES).forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t; opt.innerText = CHORD_DATA.TYPES[t].name;
+                    tSel.appendChild(opt);
+                });
+
+                rSel.value = this.currentRoot;
+                tSel.value = this.currentType;
+            },
+
+            setRoot(val) {
+                this.currentRoot = val;
+                this.currentPosIndex = 0;
+                this.save();
+                this.updateChord();
+            },
+
+            setType(val) {
+                this.currentType = val;
+                this.currentPosIndex = 0;
+                this.save();
+                this.updateChord();
+            },
+
+            save() {
+                appState.data.chord = {
+                    root: this.currentRoot,
+                    type: this.currentType
+                };
+                appState.save();
+            },
+
+            nextPosition() {
+                if (this.currentPosIndex < this.positions.length - 1) {
+                    this.currentPosIndex++;
+                    this.renderData();
+                }
+            },
+
+            prevPosition() {
+                if (this.currentPosIndex > 0) {
+                    this.currentPosIndex--;
+                    this.renderData();
+                }
+            },
+
+            updateChord() {
+                // 1. Get Positions
+                this.positions = chordEngine.getPositions(this.currentRoot, this.currentType);
+                if (this.positions.length === 0) {
+                    alert('No positions found for this chord type yet!');
+                    return;
+                }
+
+                this.renderData();
+            },
+
+            renderData() {
+                const pos = this.positions[this.currentPosIndex];
+                const notes = chordEngine.getChordNotes(this.currentRoot, this.currentType);
+
+                // Render Canvas
+                const boxCanvas = document.getElementById('chord-box');
+                const boardCanvas = document.getElementById('fretboard-canvas');
+
+                if (boxCanvas) chordRenderer.drawBox(boxCanvas, pos);
+                if (boardCanvas) chordRenderer.drawFretboard(boardCanvas, notes);
+
+                // Info
+                const notesEl = document.getElementById('chord-notes');
+                const intervalsEl = document.getElementById('chord-intervals');
+                const posEl = document.getElementById('position-indicator');
+
+                if (notesEl) notesEl.innerText = notes.join(' - ');
+                if (posEl) posEl.innerText = `Pos ${this.currentPosIndex + 1}/${this.positions.length}`;
+
+                if (intervalsEl) {
+                    intervalsEl.innerHTML = '';
+                    const intervals = CHORD_DATA.TYPES[this.currentType].intervals;
+                    intervals.forEach(i => {
+                        const span = document.createElement('span');
+                        span.className = 'badge';
+                        span.innerText = chordEngine.getIntervalName(i);
+                        intervalsEl.appendChild(span);
+                    });
+                }
+            },
+
+            handleSearch(query) {
+                if (!query) return;
+
+                // Parser Logic
+                // 1. Extract Root
+                const rootMatch = query.match(/^([A-Ga-g][#b]?)/);
+                if (!rootMatch) return;
+
+                let root = rootMatch[1];
+                // Capitalize first letter
+                root = root.charAt(0).toUpperCase() + root.slice(1);
+
+                if (!CHORD_DATA.ROOTS.includes(root)) return;
+
+                // 2. Extract Remainder (Type)
+                let typeStr = query.substring(root.length).trim().toLowerCase();
+
+                // Map common aliases
+                const typeMap = {
+                    "": "Major", "maj": "Major", "m": "Minor", "min": "Minor", "-": "Minor",
+                    "7": "7", "dom7": "7",
+                    "maj7": "Maj7", "m7": "m7", "min7": "m7",
+                    "sus2": "sus2", "sus4": "sus4",
+                    "dim": "dim", "aug": "aug", "+": "aug"
+                };
+
+                // Allow fuzzy search? simple map first
+                let matchedType = "Major"; // Default
+
+                // Check map
+                if (typeMap[typeStr]) matchedType = typeMap[typeStr];
+
+                // Also check if typeStr matches keys
+                Object.keys(CHORD_DATA.TYPES).forEach(k => {
+                    if (k.toLowerCase() === typeStr) matchedType = k;
+                });
+
+                // Apply
+                this.currentRoot = root;
+                this.currentType = matchedType;
+                this.currentPosIndex = 0;
+
+                // UI Sync
+                document.getElementById('chord-root').value = this.currentRoot;
+                document.getElementById('chord-type').value = this.currentType;
+
+                this.save();
+                this.updateChord();
+            },
+
+            setPracticeMode(mode) {
+                this.practiceMode = mode;
+                // If active, restart with new mode?
+                if (this.practiceActive) {
+                    this.togglePractice(); // Stop
+                    this.togglePractice(); // Start
+                }
+            },
+
+            togglePractice() {
+                this.practiceActive = !this.practiceActive;
+                const btn = document.getElementById('practice-toggle');
+                const nextBtn = document.getElementById('practice-next');
+                const pBox = document.querySelector('.practice-bar');
+
+                if (this.practiceActive) {
+                    btn.innerText = "Stop";
+                    btn.classList.add('active');
+                    pBox.style.borderColor = '#FF5252';
+
+                    this.stats = { total: 0, correct: 0 };
+
+                    if (this.practiceMode === 'switch') {
+                        nextBtn.classList.remove('hidden');
+                        this.startSwitch();
+                    } else {
+                        nextBtn.classList.add('hidden');
+                        this.startDrill();
+                    }
+
+                } else {
+                    btn.innerText = "Start Practice";
+                    btn.classList.remove('active');
+                    pBox.style.borderColor = '#00E676';
+                    nextBtn.classList.add('hidden');
+                    this.stopTimer();
+                }
+            },
+
+            startDrill() {
+                this.timerSecs = 0;
+                const lcd = document.getElementById('practice-timer');
+                lcd.innerText = "00:00";
+
+                this.randomize(); // Start with new
+
+                this.timer = setInterval(() => {
+                    this.timerSecs++;
+                    this.updateTimerDisplay();
+
+                    // Drill: every 5s
+                    if (this.timerSecs % 5 === 0) {
+                        this.randomize();
+                        this.stats.total++;
+                    }
+                }, 1000);
+            },
+
+            startSwitch() {
+                this.timerSecs = 0;
+                this.updateTimerDisplay();
+                this.randomize();
+
+                this.timer = setInterval(() => {
+                    this.timerSecs++;
+                    this.updateTimerDisplay();
+                }, 1000);
+            },
+
+            switchNext() {
+                // User pressed Done
+                this.stats.total++;
+                this.stats.correct++; // Assume correct in manual mode
+
+                // Log time? 
+                // Reset timer for lap? Or keep running total? 
+                // Let's keep running total but randomize chord
+                this.randomize();
+            },
+
+            updateTimerDisplay() {
+                const m = Math.floor(this.timerSecs / 60).toString().padStart(2, '0');
+                const s = (this.timerSecs % 60).toString().padStart(2, '0');
+                document.getElementById('practice-timer').innerText = `${m}:${s}`;
+            },
+
+            stopTimer() {
+                clearInterval(this.timer);
+            },
+
+            randomize() {
+                const r = CHORD_DATA.ROOTS[Math.floor(Math.random() * CHORD_DATA.ROOTS.length)];
+                const types = Object.keys(CHORD_DATA.TYPES);
+                const t = types[Math.floor(Math.random() * types.length)];
+
+                this.currentRoot = r;
+                this.currentType = t;
+                this.currentPosIndex = 0;
+
+                // Update UI selects
+                document.getElementById('chord-root').value = r;
+                document.getElementById('chord-type').value = t;
+
+                this.updateChord();
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             appState.init();
             uiController.init();
+            chordApp.init();
+            scaleApp.init(); // Init Scales
         });
 
     </script>
