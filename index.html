@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Guitar App</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables - Dark Mode Default */
+        :root {
+            /* Colors */
+            --bg-primary: #121212;
+            --bg-secondary: #1E1E1E;
+            --bg-tertiary: #2C2C2C;
+            --text-primary: #FFFFFF;
+            --text-secondary: #AAAAAA;
+            --accent-primary: #00E676; /* Vibrant Green */
+            --accent-hover: #00C853;
+            --danger: #FF5252;
+            --surface-border: #333333;
+            
+            /* Dimensions */
+            --nav-width-desktop: 250px;
+            --nav-height-mobile: 64px;
+            --header-height: 60px;
+            
+            /* Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            
+            /* Transitions */
+            --transition-speed: 0.2s;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden; /* Prevent body scroll, handle inside main */
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Layout Structure */
+        #app-container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            flex-direction: column; /* Default to mobile (column with bottom bar - implemented via ordering) */
+        }
+
+        /* Responsive Navigation */
+        #main-nav {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--surface-border);
+            /* Mobile: Fixed at bottom */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height-mobile);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-md);
+            /* Mobile: Add padding bottom for nav bar */
+            padding-bottom: calc(var(--nav-height-mobile) + var(--spacing-md));
+            background-color: var(--bg-primary);
+        }
+
+        /* Nav Interface */
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color var(--transition-speed);
+            flex: 1;
+            height: 100%;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            color: var(--accent-primary);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 2px;
+            /* Placeholder for icons, using text for now or SVGs */
+            display: block;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* Desktop Layout (>= 768px) */
+        @media (min-width: 768px) {
+            #app-container {
+                flex-direction: row;
+            }
+
+            #main-nav {
+                position: relative; /* Not fixed anymore */
+                width: var(--nav-width-desktop);
+                height: 100%;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: var(--spacing-xl);
+                border-top: none;
+                border-right: 1px solid var(--surface-border);
+            }
+
+            #content-area {
+                padding-bottom: var(--spacing-md); /* Reset padding */
+            }
+
+            .nav-item {
+                flex-direction: row;
+                width: 100%;
+                height: 60px;
+                flex: 0 0 auto;
+                padding: 0 var(--spacing-lg);
+                justify-content: flex-start;
+                gap: var(--spacing-md);
+            }
+
+            .nav-icon {
+                font-size: 20px;
+                margin-bottom: 0;
+            }
+
+            .nav-label {
+                font-size: 16px;
+                text-transform: none;
+                font-weight: 400;
+            }
+            
+            /* Logo Area for Desktop (Optional) */
+            .nav-header {
+                padding: 0 var(--spacing-lg) var(--spacing-xl);
+                font-size: 24px;
+                font-weight: 700;
+                color: var(--accent-primary);
+            }
+        }
+
+        /* Section Styling */
+        section {
+            display: none; /* Hidden by default */
+            max-width: 1200px;
+            margin: 0 auto;
+            /* Animation */
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* Card Grid System */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-md);
+        }
+
+        @media (min-width: 600px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .card-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Placeholder Cards */
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            cursor: pointer;
+            transition: transform var(--transition-speed), border-color var(--transition-speed);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-primary);
+        }
+
+        .card:active {
+            transform: translateY(0);
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        
+        /* Error / Fallback UI */
+        .error-message {
+            background-color: rgba(255, 82, 82, 0.1);
+            color: var(--danger);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- Navigation -->
+        <nav id="main-nav">
+            <!-- Desktop Header (Hidden on Mobile via CSS) -->
+            <div class="nav-header" style="display: none;">ULTIMATE GUITAR</div>
+            
+            <button class="nav-item" data-target="tools">
+                <span class="nav-icon">🛠️</span>
+                <span class="nav-label">Tools</span>
+            </button>
+            <button class="nav-item" data-target="learn">
+                <span class="nav-icon">🎓</span>
+                <span class="nav-label">Learn</span>
+            </button>
+            <button class="nav-item" data-target="ai-lab">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-label">AI Lab</span>
+            </button>
+            <button class="nav-item" data-target="practice">
+                <span class="nav-icon">🎸</span>
+                <span class="nav-label">Practice</span>
+            </button>
+            <button class="nav-item" data-target="jam">
+                <span class="nav-icon">🎵</span>
+                <span class="nav-label">Jam</span>
+            </button>
+            <button class="nav-item" data-target="profile">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Profile</span>
+            </button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main id="content-area">
+            
+            <!-- Tools Section -->
+            <section id="tools">
+                <header class="section-header">
+                    <h1 class="section-title">Tools</h1>
+                    <p class="section-subtitle">Essential utilities for every guitarist.</p>
+                </header>
+                <div class="card-grid">
+                    <div class="card" onclick="audioController.playSound()">
+                        <h3>Pro Tuner</h3>
+                        <p>High-precision chromatic tuner with alternate tunings.</p>
+                    </div>
+                    <div class="card" onclick="audioController.setBPM(120)">
+                        <h3>Metronome</h3>
+                        <p>Keep flawless time with customizable beats and subdivisions.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Chord Library</h3>
+                        <p>Discover thousands of chord variations and voicings.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Learn Section -->
+            <section id="learn">
+                <header class="section-header">
+                    <h1 class="section-title">Learn</h1>
+                    <p class="section-subtitle">Master your instrument with interactive lessons.</p>
+                </header>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Beginner Course</h3>
+                        <p>Start your journey from holding the pick to your first song.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Theory 101</h3>
+                        <p>Understand the building blocks of music.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Lab Section -->
+            <section id="ai-lab">
+                <header class="section-header">
+                    <h1 class="section-title">AI Lab</h1>
+                    <p class="section-subtitle">Next-gen features powered by machine learning.</p>
+                </header>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Chord Identifier</h3>
+                        <p>Listen to any chord and get instant recognition.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Backing Track Gen</h3>
+                        <p>Generate custom backing tracks in any style.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Practice Section -->
+            <section id="practice">
+                <header class="section-header">
+                    <h1 class="section-title">Practice</h1>
+                    <p class="section-subtitle">Structured routines to build speed and accuracy.</p>
+                </header>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Daily Warmup</h3>
+                        <p>15-minute routine to get your fingers moving.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Speed Trainer</h3>
+                        <p>Incremental BPM trainer for scales and licks.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Jam Section -->
+            <section id="jam">
+                <header class="section-header">
+                    <h1 class="section-title">Jam</h1>
+                    <p class="section-subtitle">Play along with your favorite tracks.</p>
+                </header>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Library</h3>
+                        <p>Access your saved tabs and backing tracks.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile">
+                <header class="section-header">
+                    <h1 class="section-title">Profile</h1>
+                    <p class="section-subtitle">Manage your settings and progress.</p>
+                </header>
+                <div class="card-grid">
+                    <div class="card" onclick="appState.reset()">
+                        <h3>Reset Settings</h3>
+                        <p>Restore default application state.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        /**
+         * Global State Management
+         */
+        const STATE_KEY = 'ug_app_state';
+        
+        const DEFAULT_STATE = {
+            activeTab: 'tools',
+            bpm: 120,
+            tuning: 'EADGBE',
+            darkMode: true
+        };
+
+        const appState = {
+            data: { ...DEFAULT_STATE },
+
+            init() {
+                try {
+                    const stored = localStorage.getItem(STATE_KEY);
+                    if (stored) {
+                        this.data = { ...DEFAULT_STATE, ...JSON.parse(stored) };
+                    }
+                } catch (e) {
+                    console.error('State load failed, resetting:', e);
+                    this.reset();
+                }
+                this.apply();
+            },
+
+            save() {
+                try {
+                    localStorage.setItem(STATE_KEY, JSON.stringify(this.data));
+                } catch (e) {
+                    console.error('State save failed:', e);
+                }
+            },
+
+            setTab(tabId) {
+                this.data.activeTab = tabId;
+                this.save();
+                uiController.renderTab(tabId);
+            },
+
+            reset() {
+                this.data = { ...DEFAULT_STATE };
+                this.save();
+                this.apply();
+                alert('Settings reset to default.');
+            },
+            
+            apply() {
+                // Apply theme if needed (defaults to dark, but if we had light mode)
+                // this.data.darkMode ? ... : ...
+                
+                // Render correct tab
+                uiController.renderTab(this.data.activeTab);
+            }
+        };
+
+        /**
+         * Audio Controller Stub
+         */
+        const audioController = {
+            startMic() {
+                console.log('Audio: Microphone started');
+            },
+            stopMic() {
+                console.log('Audio: Microphone stopped');
+            },
+            playSound() {
+                console.log('Audio: Playing generic sound');
+                // Visual feedback only
+                alert('Audio Stub: *Beep*');
+            },
+            stopSound() {
+                console.log('Audio: Sound stopped');
+            },
+            setBPM(bpm) {
+                appState.data.bpm = bpm;
+                appState.save();
+                console.log(`Audio: BPM set to ${bpm}`);
+                alert(`BPM set to ${bpm}`);
+            }
+        };
+
+        /**
+         * UI Controller
+         */
+        const uiController = {
+            init() {
+                // Setup Navigation Listeners
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        // Find closest button in case user clicked icon/span
+                        const btn = e.target.closest('.nav-item');
+                        const target = btn.dataset.target;
+                        if (target) {
+                            appState.setTab(target);
+                        }
+                    });
+                });
+
+                // Desktop Header Visibility Logic
+                this.handleResize();
+                window.addEventListener('resize', () => this.handleResize());
+            },
+
+            renderTab(tabId) {
+                // 1. Update Buttons
+                document.querySelectorAll('.nav-item').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.target === tabId);
+                });
+
+                // 2. Update Sections
+                const sections = document.querySelectorAll('section');
+                let found = false;
+                sections.forEach(sec => {
+                    if (sec.id === tabId) {
+                        sec.classList.add('active');
+                        found = true;
+                    } else {
+                        sec.classList.remove('active');
+                    }
+                });
+
+                // Error Handling for missing section
+                if (!found) {
+                    console.warn(`Section #${tabId} not found, falling back to tools.`);
+                    if(tabId !== 'tools') appState.setTab('tools'); 
+                }
+            },
+
+            handleResize() {
+                const isDesktop = window.innerWidth >= 768;
+                const header = document.querySelector('.nav-header');
+                if(header) header.style.display = isDesktop ? 'block' : 'none';
+            }
+        };
+
+        /**
+         * Boot
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            appState.init();
+            uiController.init();
+        });
+
+    </script>
+</body>
+</html>
