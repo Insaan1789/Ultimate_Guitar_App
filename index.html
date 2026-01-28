@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         /* CSS Variables - Dark Mode Default */
         :root {
@@ -18,23 +19,26 @@
             --bg-tertiary: #2C2C2C;
             --text-primary: #FFFFFF;
             --text-secondary: #AAAAAA;
-            --accent-primary: #00E676; /* Vibrant Green */
+            --accent-primary: #00E676;
+            /* Vibrant Green */
             --accent-hover: #00C853;
             --danger: #FF5252;
+            --warning: #FFAB40;
+            /* Orange for Flat */
             --surface-border: #333333;
-            
+
             /* Dimensions */
             --nav-width-desktop: 250px;
             --nav-height-mobile: 64px;
             --header-height: 60px;
-            
+
             /* Spacing */
             --spacing-xs: 4px;
             --spacing-sm: 8px;
             --spacing-md: 16px;
             --spacing-lg: 24px;
             --spacing-xl: 32px;
-            
+
             /* Transitions */
             --transition-speed: 0.2s;
         }
@@ -50,7 +54,8 @@
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
-            overflow: hidden; /* Prevent body scroll, handle inside main */
+            overflow: hidden;
+            /* Prevent body scroll, handle inside main */
             height: 100vh;
             width: 100vw;
         }
@@ -60,7 +65,8 @@
             display: flex;
             height: 100%;
             width: 100%;
-            flex-direction: column; /* Default to mobile (column with bottom bar - implemented via ordering) */
+            flex-direction: column;
+            /* Default to mobile (column with bottom bar - implemented via ordering) */
         }
 
         /* Responsive Navigation */
@@ -117,7 +123,7 @@
             /* Placeholder for icons, using text for now or SVGs */
             display: block;
         }
-        
+
         .nav-label {
             font-size: 10px;
             text-transform: uppercase;
@@ -132,7 +138,8 @@
             }
 
             #main-nav {
-                position: relative; /* Not fixed anymore */
+                position: relative;
+                /* Not fixed anymore */
                 width: var(--nav-width-desktop);
                 height: 100%;
                 flex-direction: column;
@@ -143,7 +150,8 @@
             }
 
             #content-area {
-                padding-bottom: var(--spacing-md); /* Reset padding */
+                padding-bottom: var(--spacing-md);
+                /* Reset padding */
             }
 
             .nav-item {
@@ -166,7 +174,7 @@
                 text-transform: none;
                 font-weight: 400;
             }
-            
+
             /* Logo Area for Desktop (Optional) */
             .nav-header {
                 padding: 0 var(--spacing-lg) var(--spacing-xl);
@@ -178,7 +186,8 @@
 
         /* Section Styling */
         section {
-            display: none; /* Hidden by default */
+            display: none;
+            /* Hidden by default */
             max-width: 1200px;
             margin: 0 auto;
             /* Animation */
@@ -190,8 +199,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .section-header {
@@ -261,8 +277,10 @@
         }
 
         /* Utility Classes */
-        .hidden { display: none !important; }
-        
+        .hidden {
+            display: none !important;
+        }
+
         /* Error / Fallback UI */
         .error-message {
             background-color: rgba(255, 82, 82, 0.1);
@@ -273,8 +291,195 @@
             margin-top: 20px;
         }
 
+        /* =========================================
+           TUNER MODULE STYLES
+           ========================================= */
+        #tuner-view {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            height: 100%;
+        }
+
+        .tuner-top-bar {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: var(--spacing-xs);
+        }
+
+        .tuner-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .tuner-select {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--surface-border);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .tuner-display {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl) 0;
+            position: relative;
+        }
+
+        .note-name {
+            font-size: 96px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            /* Default dim */
+            transition: color 0.1s;
+        }
+
+        .note-name.in-tune {
+            color: var(--accent-primary);
+        }
+
+        .note-name.sharp {
+            color: var(--danger);
+        }
+
+        .note-name.flat {
+            color: var(--warning);
+        }
+
+        .octave {
+            font-size: 32px;
+            vertical-align: super;
+            opacity: 0.7;
+        }
+
+        .cents-display {
+            font-size: 24px;
+            font-family: monospace;
+            color: var(--text-secondary);
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Meter Assembly */
+        .meter-container {
+            width: 300px;
+            height: 20px;
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            position: relative;
+            margin-top: var(--spacing-lg);
+            overflow: hidden;
+        }
+
+        .center-marker {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--text-secondary);
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .needle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--accent-primary);
+            left: 50%;
+            transform: translateX(-50%);
+            transition: left 0.1s ease-out;
+            box-shadow: 0 0 8px var(--accent-primary);
+        }
+
+        .needle.sharp {
+            background-color: var(--danger);
+            box-shadow: 0 0 8px var(--danger);
+        }
+
+        .needle.flat {
+            background-color: var(--warning);
+            box-shadow: 0 0 8px var(--warning);
+        }
+
+        /* Headstock / String Selector */
+        .headstock-container {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .string-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            border: 2px solid var(--surface-border);
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .string-btn:hover {
+            border-color: var(--text-secondary);
+        }
+
+        .string-btn.active {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #000;
+        }
+
+        .tuner-actions {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+        }
+
+        .action-btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: 20px;
+            border: 1px solid var(--surface-border);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .action-btn.primary {
+            background-color: var(--accent-primary);
+            color: #000;
+            border: none;
+            font-weight: 600;
+        }
     </style>
 </head>
+
 <body>
 
     <div id="app-container">
@@ -282,7 +487,7 @@
         <nav id="main-nav">
             <!-- Desktop Header (Hidden on Mobile via CSS) -->
             <div class="nav-header" style="display: none;">ULTIMATE GUITAR</div>
-            
+
             <button class="nav-item" data-target="tools">
                 <span class="nav-icon">🛠️</span>
                 <span class="nav-label">Tools</span>
@@ -311,25 +516,66 @@
 
         <!-- Main Content Area -->
         <main id="content-area">
-            
-            <!-- Tools Section -->
+
+            <!-- Tools Section (Now contains Sub-Views) -->
             <section id="tools">
-                <header class="section-header">
-                    <h1 class="section-title">Tools</h1>
-                    <p class="section-subtitle">Essential utilities for every guitarist.</p>
-                </header>
-                <div class="card-grid">
-                    <div class="card" onclick="audioController.playSound()">
-                        <h3>Pro Tuner</h3>
-                        <p>High-precision chromatic tuner with alternate tunings.</p>
+                <!-- Dashboard View -->
+                <div id="tools-dashboard">
+                    <header class="section-header">
+                        <h1 class="section-title">Tools</h1>
+                        <p class="section-subtitle">Essential utilities for every guitarist.</p>
+                    </header>
+                    <div class="card-grid">
+                        <div class="card" onclick="tunerApp.open()">
+                            <h3>Pro Tuner</h3>
+                            <p>High-precision chromatic tuner with alternate tunings.</p>
+                        </div>
+                        <div class="card" onclick="audioController.setBPM(120)">
+                            <h3>Metronome</h3>
+                            <p>Keep flawless time with customizable beats and subdivisions.</p>
+                        </div>
+                        <div class="card">
+                            <h3>Chord Library</h3>
+                            <p>Discover thousands of chord variations and voicings.</p>
+                        </div>
                     </div>
-                    <div class="card" onclick="audioController.setBPM(120)">
-                        <h3>Metronome</h3>
-                        <p>Keep flawless time with customizable beats and subdivisions.</p>
+                </div>
+
+                <!-- Tuner View (Hidden by Default) -->
+                <div id="tuner-view" class="hidden">
+                    <div class="tuner-top-bar">
+                        <button class="back-btn" onclick="tunerApp.close()">&#8592;</button>
+                        <h2>Pro Tuner</h2>
                     </div>
-                    <div class="card">
-                        <h3>Chord Library</h3>
-                        <p>Discover thousands of chord variations and voicings.</p>
+
+                    <div class="tuner-controls">
+                        <select id="tuner-instrument" class="tuner-select"
+                            onchange="tunerApp.setInstrument(this.value)">
+                            <!-- Populated by JS -->
+                        </select>
+                        <select id="tuner-tuning" class="tuner-select" onchange="tunerApp.setTuning(this.value)">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+
+                    <div class="tuner-display">
+                        <div class="note-name" id="note-display">--</div>
+                        <div class="cents-display" id="cents-display">0 cents</div>
+
+                        <div class="meter-container">
+                            <div class="center-marker"></div>
+                            <div class="needle" id="tuner-needle"></div>
+                        </div>
+                    </div>
+
+                    <div class="headstock-container" id="string-selector">
+                        <!-- Strings generated by JS -->
+                    </div>
+
+                    <div class="tuner-actions">
+                        <button class="action-btn" id="mode-toggle" onclick="tunerApp.toggleMode()">Mode: Auto</button>
+                        <button class="action-btn primary" id="mic-toggle" onclick="tunerApp.toggleMic()">Start
+                            Tuner</button>
                     </div>
                 </div>
             </section>
@@ -369,7 +615,7 @@
                     </div>
                 </div>
             </section>
-            
+
             <!-- Practice Section -->
             <section id="practice">
                 <header class="section-header">
@@ -424,12 +670,18 @@
          * Global State Management
          */
         const STATE_KEY = 'ug_app_state';
-        
+
         const DEFAULT_STATE = {
             activeTab: 'tools',
+            activeSectionView: 'dashboard', // dashboard or tuner
             bpm: 120,
             tuning: 'EADGBE',
-            darkMode: true
+            darkMode: true,
+            tuner: {
+                instrument: "Guitar",
+                tuningName: "Standard",
+                mode: "auto"
+            }
         };
 
         const appState = {
@@ -440,6 +692,8 @@
                     const stored = localStorage.getItem(STATE_KEY);
                     if (stored) {
                         this.data = { ...DEFAULT_STATE, ...JSON.parse(stored) };
+                        // Merge nested tuner object if missing (backward compatibility)
+                        if (!this.data.tuner) this.data.tuner = DEFAULT_STATE.tuner;
                     }
                 } catch (e) {
                     console.error('State load failed, resetting:', e);
@@ -458,6 +712,11 @@
 
             setTab(tabId) {
                 this.data.activeTab = tabId;
+                // If leaving tools, ensure tuner is closed cleanly
+                if (tabId !== 'tools') {
+                    this.data.activeSectionView = 'dashboard';
+                    tunerApp.close(false); // Clean close without changing tab
+                }
                 this.save();
                 uiController.renderTab(tabId);
             },
@@ -468,38 +727,456 @@
                 this.apply();
                 alert('Settings reset to default.');
             },
-            
+
             apply() {
-                // Apply theme if needed (defaults to dark, but if we had light mode)
-                // this.data.darkMode ? ... : ...
-                
-                // Render correct tab
                 uiController.renderTab(this.data.activeTab);
+                // Restore Tuner View if that was active
+                if (this.data.activeTab === 'tools' && this.data.activeSectionView === 'tuner') {
+                    tunerApp.open(true); // true = skip state save loop
+                }
             }
         };
 
         /**
-         * Audio Controller Stub
+         * Tuner Data & Logic
+         */
+        const TUNER_DATA = {
+            "Guitar": {
+                strings: 6,
+                tunings: [
+                    { name: "Standard", notes: ["E2", "A2", "D3", "G3", "B3", "E4"] },
+                    { name: "Drop D", notes: ["D2", "A2", "D3", "G3", "B3", "E4"] },
+                    { name: "Half-Step Down", notes: ["Eb2", "Ab2", "Db3", "Gb3", "Bb3", "Eb4"] }
+                ]
+            },
+            "Bass": {
+                strings: 4,
+                tunings: [
+                    { name: "Standard", notes: ["E1", "A1", "D2", "G2"] },
+                    { name: "Drop D", notes: ["D1", "A1", "D2", "G2"] }
+                ]
+            },
+            "Ukulele": {
+                strings: 4,
+                tunings: [
+                    { name: "Standard (GCEA)", notes: ["G4", "C4", "E4", "A4"] }
+                ]
+            },
+            "Violin": {
+                strings: 4,
+                tunings: [
+                    { name: "Standard", notes: ["G3", "D4", "A4", "E5"] }
+                ]
+            }
+        };
+
+        const NOTE_STRINGS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+
+        /**
+         * Migrated Tuner Engine
+         * Source: Pro Guitar Tuner Project
+         */
+        const tunerEngine = {
+            config: {
+                bufferSize: 4096,
+                confidenceThreshold: 0.9,
+                minFreq: 60,
+                maxFreq: 1000,
+                tunedTolerance: 5,
+                stableDuration: 600,
+                silenceRMS: 0.015
+            },
+
+            // State
+            audioContext: null,
+            analyser: null,
+            microphone: null,
+            isActive: false,
+            rafId: null,
+
+            // Logic State
+            currentString: "AUTO", // or specific note "E2"
+            currentRMS: 0,
+
+            // Smoothing
+            currentNeedleAngle: 0,
+            targetNeedleAngle: 0,
+            lastFrameTime: 0,
+
+            // Data Implants
+            guitarStrings: {
+                'E2': { freq: 82.41, min: 70, max: 95 },
+                'A2': { freq: 110.00, min: 95, max: 125 },
+                'D3': { freq: 146.83, min: 130, max: 165 },
+                'G3': { freq: 196.00, min: 175, max: 215 },
+                'B3': { freq: 246.94, min: 225, max: 270 },
+                'E4': { freq: 329.63, min: 300, max: 360 }
+            },
+
+            NOTE_NAMES: ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"],
+
+            async start() {
+                if (this.isActive) return;
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                    this.analyser = this.audioContext.createAnalyser();
+                    this.analyser.fftSize = 2048;
+
+                    this.microphone = this.audioContext.createMediaStreamSource(stream);
+                    this.microphone.connect(this.analyser);
+
+                    this.isActive = true;
+                    this.lastFrameTime = performance.now();
+                    this.updateLoop();
+
+                    // UI Hook
+                    document.getElementById('mic-toggle').innerText = "Stop Tuner";
+                    document.getElementById('mic-toggle').classList.add('active');
+                } catch (e) {
+                    console.error("Mic Error:", e);
+                    alert("Unable to access microphone. Please allow permissions.");
+                    this.isActive = false;
+                }
+            },
+
+            stop() {
+                if (!this.isActive) return;
+
+                if (this.rafId) cancelAnimationFrame(this.rafId);
+                if (this.microphone) this.microphone.disconnect();
+                if (this.audioContext && this.audioContext.state !== 'closed') this.audioContext.close();
+
+                this.isActive = false;
+                this.audioContext = null;
+
+                // UI Hook
+                document.getElementById('mic-toggle').innerText = "Start Tuner";
+                document.getElementById('mic-toggle').classList.remove('active');
+                tunerApp.updateDisplay(null, 0);
+            },
+
+            setMode(mode) {
+                // 'auto' or 'manual' handled by setTarget essentially
+                if (mode === 'auto') this.currentString = "AUTO";
+            },
+
+            setTarget(note) {
+                this.currentString = note;
+                // If it's a new note not in our map (custom tuning), generated it
+                if (note !== 'AUTO' && !this.guitarStrings[note]) {
+                    const f = this.getNoteFreq(note);
+                    this.guitarStrings[note] = { freq: f, min: f * 0.85, max: f * 1.15 };
+                }
+            },
+
+            updateLoop() {
+                if (!this.isActive) return;
+
+                const now = performance.now();
+                const dt = now - this.lastFrameTime;
+                this.lastFrameTime = now;
+
+                const buffer = new Float32Array(this.config.bufferSize);
+                this.analyser.getFloatTimeDomainData(buffer);
+
+                // RMS
+                let rms = 0;
+                for (let i = 0; i < buffer.length; i++) rms += buffer[i] * buffer[i];
+                rms = Math.sqrt(rms / buffer.length);
+                this.currentRMS = rms;
+
+                const frequency = this.autoCorrelate(buffer, this.audioContext.sampleRate, rms);
+                this.processPitch(frequency, dt);
+
+                this.rafId = requestAnimationFrame(() => this.updateLoop());
+            },
+
+            processPitch(frequency, dt) {
+                if (frequency === -1) {
+                    // Holding logic or reset? 
+                    // Let's reset display if silent for a bit
+                    if (this.currentRMS < this.config.silenceRMS) {
+                        tunerApp.updateDisplay(null, 0, 0);
+                    }
+                    return;
+                }
+
+                let targetFreq = 0;
+                let noteName = "";
+                let octave = "";
+                let centDiff = 0;
+                let isValid = false;
+
+                if (this.currentString === 'AUTO') {
+                    const detected = this.detectNote(frequency);
+                    if (detected) {
+                        targetFreq = detected.freq;
+                        noteName = detected.note.replace(/\d/, '');
+                        octave = detected.note.slice(-1);
+                        centDiff = this.calculateCents(frequency, targetFreq);
+                        isValid = true;
+                    }
+                } else {
+                    // Manual Locking
+                    const s = this.guitarStrings[this.currentString];
+                    if (s) {
+                        targetFreq = s.freq;
+                        noteName = this.currentString.replace(/\d/, '');
+                        octave = this.currentString.slice(-1);
+                        centDiff = this.calculateCents(frequency, targetFreq);
+                        isValid = true;
+                    }
+                }
+
+                if (isValid) {
+                    tunerApp.updateDisplay(noteName, octave, Math.round(centDiff));
+                }
+            },
+
+            detectNote(freq) {
+                let closest = null;
+                let minDiff = Infinity;
+                for (const [note, data] of Object.entries(this.guitarStrings)) {
+                    // Optimization: check range first
+                    if (freq >= data.min && freq <= data.max) return { note, freq: data.freq };
+
+                    const diff = Math.abs(freq - data.freq);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closest = { note, freq: data.freq };
+                    }
+                }
+                return closest;
+            },
+
+            getNoteFreq(noteWithOctave) {
+                const match = noteWithOctave.match(/^([A-Ga-g]+#?b?)(\d+)$/);
+                if (!match) return 0;
+                let note = match[1];
+                const octave = parseInt(match[2]);
+                const flatToSharp = { "Eb": "D#", "Ab": "G#", "Bb": "A#", "Db": "C#", "Gb": "F#" };
+                if (flatToSharp[note]) note = flatToSharp[note];
+                const noteIndex = this.NOTE_NAMES.indexOf(note);
+                const a4Index = 57; // A4 (9 + 4*12)
+                const thisIndex = octave * 12 + noteIndex;
+                return 440 * Math.pow(2, (thisIndex - a4Index) / 12);
+            },
+
+            calculateCents(current, target) {
+                return 1200 * Math.log2(current / target);
+            },
+
+            autoCorrelate(buf, sampleRate, precalcRMS) {
+                if (precalcRMS < this.config.silenceRMS) return -1;
+
+                // Window
+                let r1 = 0, r2 = buf.length - 1, thres = 0.2;
+                for (let i = 0; i < buf.length / 2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+                for (let i = 1; i < buf.length / 2; i++) if (Math.abs(buf[buf.length - i]) < thres) { r2 = buf.length - i; break; }
+                const buf2 = buf.slice(r1, r2);
+                const c = new Array(buf2.length).fill(0);
+
+                // Autocorrelation
+                for (let offset = 30; offset < 800; offset++) {
+                    let corr = 0;
+                    for (let i = 0; i < buf2.length - offset; i++) corr += buf2[i] * buf2[i + offset];
+                    c[offset] = corr;
+                }
+
+                // Peak finding
+                let d = 0; while (c[d] > c[d + 1]) d++;
+                let maxval = -1, maxpos = -1;
+                for (let i = d; i < c.length; i++) {
+                    if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+                }
+                let T0 = maxpos;
+
+                // Interpolation
+                let x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+                let a = (x1 + x3 - 2 * x2) / 2;
+                let b = (x3 - x1) / 2;
+                if (a) T0 = T0 - b / (2 * a);
+
+                return sampleRate / T0;
+            }
+        };
+
+        const tunerApp = {
+            currentInstrument: "Guitar",
+            currentTuning: [],
+            mode: "auto",
+
+            open(skipSave = false) {
+                // UI Switch
+                document.getElementById('tools-dashboard').classList.add('hidden');
+                document.getElementById('tuner-view').classList.remove('hidden');
+
+                if (!skipSave) {
+                    appState.data.activeSectionView = 'tuner';
+                    appState.save();
+                }
+
+                this.populateInstruments();
+                this.setInstrument(appState.data.tuner.instrument || "Guitar", true);
+            },
+
+            close(saveState = true) {
+                tunerEngine.stop();
+                document.getElementById('tuner-view').classList.add('hidden');
+                document.getElementById('tools-dashboard').classList.remove('hidden');
+
+                if (saveState) {
+                    appState.data.activeSectionView = 'dashboard';
+                    appState.save();
+                }
+            },
+
+            toggleMic() {
+                if (tunerEngine.isActive) tunerEngine.stop();
+                else tunerEngine.start();
+            },
+
+            toggleMode() {
+                this.mode = this.mode === 'auto' ? 'manual' : 'auto';
+                document.getElementById('mode-toggle').innerText = `Mode: ${this.mode.charAt(0).toUpperCase() + this.mode.slice(1)}`;
+                appState.data.tuner.mode = this.mode;
+                appState.save();
+
+                tunerEngine.setMode(this.mode);
+                if (this.mode === 'auto') {
+                    this.renderStrings();
+                }
+            },
+
+            populateInstruments() {
+                const select = document.getElementById('tuner-instrument');
+                select.innerHTML = '';
+                Object.keys(TUNER_DATA).forEach(inst => {
+                    const opt = document.createElement('option');
+                    opt.value = inst;
+                    opt.innerText = inst;
+                    select.appendChild(opt);
+                });
+                select.value = appState.data.tuner.instrument;
+            },
+
+            setInstrument(name, forceInit = false) {
+                if (!TUNER_DATA[name]) return;
+                this.currentInstrument = name;
+
+                // Update State
+                appState.data.tuner.instrument = name;
+                appState.save();
+
+                // Populate Tunings
+                const tuningSelect = document.getElementById('tuner-tuning');
+                tuningSelect.innerHTML = '';
+                TUNER_DATA[name].tunings.forEach((t, index) => {
+                    const opt = document.createElement('option');
+                    opt.value = index;
+                    opt.innerText = t.name;
+                    tuningSelect.appendChild(opt);
+                });
+
+                // Default to first tuning or saved
+                this.setTuning(0);
+            },
+
+            setTuning(index) {
+                const tuningData = TUNER_DATA[this.currentInstrument].tunings[index];
+                if (!tuningData) return;
+
+                this.currentTuning = tuningData.notes;
+                appState.data.tuner.tuningName = tuningData.name;
+                appState.save();
+
+                // Setup Engine targets (pre-calc if needed, though SetTarget handles it on demand)
+                this.renderStrings();
+            },
+
+            renderStrings() {
+                const container = document.getElementById('string-selector');
+                container.innerHTML = '';
+
+                this.currentTuning.forEach((note, idx) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'string-btn';
+                    btn.innerText = note;
+                    btn.onclick = () => this.selectString(note, btn);
+
+                    // Check active
+                    if (this.mode === 'manual' && tunerEngine.currentString === note) {
+                        btn.classList.add('active');
+                    }
+
+                    container.appendChild(btn);
+                });
+            },
+
+            selectString(note, btnEl) {
+                if (this.mode !== 'manual') this.toggleMode();
+                tunerEngine.setTarget(note);
+
+                // Update UI
+                document.querySelectorAll('.string-btn').forEach(b => b.classList.remove('active'));
+                btnEl.classList.add('active');
+            },
+
+            updateDisplay(note, octave, cents) {
+                const noteEl = document.getElementById('note-display');
+                const needleEl = document.getElementById('tuner-needle');
+                const centerEl = document.getElementById('cents-display');
+
+                if (!note) {
+                    noteEl.innerHTML = '--';
+                    noteEl.className = 'note-name';
+                    centerEl.innerText = '0 cents';
+                    needleEl.style.left = '50%';
+                    needleEl.className = 'needle';
+                    return;
+                }
+
+                noteEl.innerHTML = `${note}<span class="octave">${octave}</span>`;
+                centerEl.innerText = `${cents > 0 ? '+' : ''}${cents} cents`;
+
+                // Calculate visual position
+                const clampedCents = Math.max(-50, Math.min(50, cents));
+                const percent = 50 + clampedCents;
+                needleEl.style.left = `${percent}%`;
+
+                // Color States
+                needleEl.className = 'needle';
+                noteEl.className = 'note-name';
+
+                if (Math.abs(cents) <= 5) {
+                    needleEl.classList.add('in-tune');
+                    noteEl.classList.add('in-tune');
+                } else if (cents > 5) {
+                    needleEl.classList.add('sharp');
+                    noteEl.classList.add('sharp');
+                } else {
+                    needleEl.classList.add('flat');
+                    noteEl.classList.add('flat');
+                }
+            }
+        };
+
+        /**
+         * Global Audio Controller (Modified for Tuner access)
          */
         const audioController = {
-            startMic() {
-                console.log('Audio: Microphone started');
-            },
-            stopMic() {
-                console.log('Audio: Microphone stopped');
-            },
+            startMic() { tunerApp.toggleMic(); },
+            stopMic() { tunerEngine.stop(); },
             playSound() {
                 console.log('Audio: Playing generic sound');
-                // Visual feedback only
                 alert('Audio Stub: *Beep*');
             },
-            stopSound() {
-                console.log('Audio: Sound stopped');
-            },
+            stopSound() { console.log('Audio: Sound stopped'); },
             setBPM(bpm) {
                 appState.data.bpm = bpm;
                 appState.save();
-                console.log(`Audio: BPM set to ${bpm}`);
                 alert(`BPM set to ${bpm}`);
             }
         };
@@ -548,14 +1225,14 @@
                 // Error Handling for missing section
                 if (!found) {
                     console.warn(`Section #${tabId} not found, falling back to tools.`);
-                    if(tabId !== 'tools') appState.setTab('tools'); 
+                    if (tabId !== 'tools') appState.setTab('tools');
                 }
             },
 
             handleResize() {
                 const isDesktop = window.innerWidth >= 768;
                 const header = document.querySelector('.nav-header');
-                if(header) header.style.display = isDesktop ? 'block' : 'none';
+                if (header) header.style.display = isDesktop ? 'block' : 'none';
             }
         };
 
@@ -569,4 +1246,5 @@
 
     </script>
 </body>
+
 </html>
