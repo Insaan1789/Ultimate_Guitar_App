@@ -914,6 +914,92 @@
             gap: 16px;
             margin-bottom: 16px;
         }
+
+        /* AI Lab Styles */
+        .ai-view {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .ai-view.active {
+            display: block;
+        }
+
+        .search-input {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--surface-border);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .tab-scroller {
+            display: flex;
+            gap: 20px;
+            padding: 10px 0;
+            /* Scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-primary) var(--bg-secondary);
+        }
+
+        .tab-scroller::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .tab-scroller::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        .tab-card {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            min-width: 250px;
+            border: 1px solid transparent;
+        }
+
+        .tab-card:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .progression-card {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .scale-result-card {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .confidence-meter {
+            height: 4px;
+            background: var(--bg-secondary);
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .confidence-val {
+            height: 100%;
+            background: var(--accent-primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
     </style>
 </head>
 
@@ -1229,20 +1315,119 @@
                     </div>
                 </div>
             </section>
-            <!-- AI Lab Section -->
             <section id="ai-lab">
                 <header class="section-header">
                     <h1 class="section-title">AI Lab</h1>
-                    <p class="section-subtitle">Next-gen features powered by machine learning.</p>
+                    <p class="section-subtitle">Next-gen features powered by real-time analysis and algorithms.</p>
                 </header>
-                <div class="card-grid">
-                    <div class="card">
-                        <h3>Chord Identifier</h3>
-                        <p>Listen to any chord and get instant recognition.</p>
+
+                <!-- AI Sub Nav -->
+                <div class="sub-nav">
+                    <button class="sub-nav-btn active" onclick="aiLabApp.switchView('chord-id')"
+                        data-ai-view="chord-id">Chord ID</button>
+                    <button class="sub-nav-btn" onclick="aiLabApp.switchView('tab-gen')" data-ai-view="tab-gen">Tab
+                        Gen</button>
+                    <button class="sub-nav-btn" onclick="aiLabApp.switchView('progression')"
+                        data-ai-view="progression">Progression</button>
+                    <button class="sub-nav-btn" onclick="aiLabApp.switchView('scale-rec')"
+                        data-ai-view="scale-rec">Scale Rec</button>
+                </div>
+
+                <!-- 1. Chord ID View -->
+                <div id="ai-view-chord-id" class="ai-view">
+                    <div class="theory-container"
+                        style="display:flex; flex-direction:column; align-items:center; gap:20px;">
+
+                        <div class="visualizer-container"
+                            style="position:relative; width:100%; max-width:600px; height:200px; background:#111; border-radius:12px; overflow:hidden; border:1px solid #333;">
+                            <canvas id="ai-visualizer" width="600" height="200"></canvas>
+                            <div style="position:absolute; top:10px; left:10px; font-size:12px; color:#666;">AUDIO INPUT
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button class="action-btn" id="ai-mic-toggle" onclick="aiChordFinder.toggleMic()">Start
+                                Listening</button>
+                        </div>
+
+                        <div class="info-card" style="width:100%; max-width:600px; text-align:center;">
+                            <div class="info-label">Detected Chord</div>
+                            <div class="info-value" id="ai-chord-result" style="font-size:3rem; color:#00E676;">--</div>
+                            <div class="info-label detection-confidence" style="color:#666; margin-top:5px;">Confidence:
+                                0%</div>
+                        </div>
+
+                        <div class="info-card" style="width:100%; max-width:600px;">
+                            <div class="info-label">Alternatives</div>
+                            <div class="dia-grid" id="ai-chord-alts"
+                                style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
+                                <!-- Generated -->
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h3>Backing Track Gen</h3>
-                        <p>Generate custom backing tracks in any style.</p>
+                </div>
+
+                <!-- 2. Tab Generator View -->
+                <div id="ai-view-tab-gen" class="ai-view" style="display:none">
+                    <div class="theory-toggles">
+                        <input type="text" id="ai-tab-input" class="search-input"
+                            placeholder="Enter Chord (e.g. C#m7)..." style="width:200px;">
+                        <button class="action-btn" onclick="aiTabGen.generate()">Generate Tab</button>
+                    </div>
+                    <div id="ai-tab-output" class="tab-scroller"
+                        style="margin-top:20px; overflow-x:auto; padding-bottom:20px;">
+                        <!-- Generated Canvases will go here -->
+                        <div style="text-align:center; color:#666;">Enter a chord to generate playable shapes.</div>
+                    </div>
+                </div>
+
+                <!-- 3. Progression Generator View -->
+                <div id="ai-view-progression" class="ai-view" style="display:none">
+                    <div class="chord-controls">
+                        <div class="control-group">
+                            <label class="info-label">Key</label>
+                            <select id="ai-prog-key" class="tuner-select">
+                                <option value="C">C</option>
+                                <option value="G">G</option>
+                                <option value="D">D</option>
+                                <option value="A">A</option>
+                                <option value="E">E</option>
+                                <option value="B">B</option>
+                                <option value="F#">F#</option>
+                                <option value="Db">Db</option>
+                                <option value="Ab">Ab</option>
+                                <option value="Eb">Eb</option>
+                                <option value="Bb">Bb</option>
+                                <option value="F">F</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label class="info-label">Mood</label>
+                            <select id="ai-prog-mood" class="tuner-select">
+                                <option value="happy">Happy (Pop/Major)</option>
+                                <option value="sad">Sad (Minor)</option>
+                                <option value="epic">Epic (Film Score)</option>
+                                <option value="jazzy">Jazzy (Complex)</option>
+                                <option value="dark">Dark (Phrygian)</option>
+                            </select>
+                        </div>
+                        <button class="action-btn" onclick="aiProgressionGen.generate()">Generate</button>
+                    </div>
+
+                    <div id="ai-prog-result" style="margin-top:30px; display:flex; flex-direction:column; gap:15px;">
+                        <!-- Results -->
+                    </div>
+                </div>
+
+                <!-- 4. Scale Recommender View -->
+                <div id="ai-view-scale-rec" class="ai-view" style="display:none">
+                    <div class="theory-toggles">
+                        <input type="text" id="ai-scale-input" class="search-input"
+                            placeholder="Enter Chord (e.g. Am7)..." style="width:200px;">
+                        <button class="action-btn" onclick="aiScaleRec.find()">Find Scales</button>
+                    </div>
+                    <div id="ai-scale-results" class="card-grid" style="margin-top:20px;">
+                        <!-- Scale Cards -->
                     </div>
                 </div>
             </section>
@@ -1324,6 +1509,13 @@
             theory: {
                 keyIndex: 0,
                 mode: 'major'
+            },
+            ai: {
+                activeView: 'chord-id',
+                lastChordInput: '',
+                lastScaleInput: '',
+                lastProgKey: 'C',
+                lastProgMood: 'happy'
             }
         }
 
@@ -3396,6 +3588,377 @@
             { key: "F", acc: -1, rel: "Dm", chords: ["F", "Gm", "Am", "Bb", "C", "Dm", "Edim"], scale: ["F", "G", "A", "Bb", "C", "D", "E"] }
         ];
 
+        const aiLabApp = {
+            activeView: 'chord-id',
+
+            init() {
+                // Load State
+                const s = appState.data.ai || {};
+                this.activeView = s.activeView || 'chord-id';
+
+                // Restoring Inputs
+                if (s.lastTabInput) document.getElementById('ai-tab-input').value = s.lastTabInput;
+                if (s.lastScaleInput) document.getElementById('ai-scale-input').value = s.lastScaleInput;
+                if (s.lastProgKey) document.getElementById('ai-prog-key').value = s.lastProgKey;
+                if (s.lastProgMood) document.getElementById('ai-prog-mood').value = s.lastProgMood;
+
+                // Open correct view
+                this.switchView(this.activeView, false);
+            },
+
+            switchView(viewId, save = true) {
+                this.activeView = viewId;
+
+                // Update Buttons
+                document.querySelectorAll('.sub-nav-btn[data-ai-view]').forEach(b => {
+                    b.classList.toggle('active', b.dataset.aiView === viewId);
+                });
+
+                // Update Sections
+                document.querySelectorAll('.ai-view').forEach(v => {
+                    v.style.display = (v.id === `ai-view-${viewId}`) ? 'block' : 'none';
+                    if (v.id === `ai-view-${viewId}`) v.classList.add('active');
+                });
+
+                // Stop Mic if leaving chord-id
+                if (viewId !== 'chord-id') {
+                    aiChordFinder.stop();
+                }
+
+                if (save) {
+                    if (!appState.data.ai) appState.data.ai = {};
+                    appState.data.ai.activeView = viewId;
+                    appState.save();
+                }
+            }
+        };
+
+        const aiChordFinder = {
+            isActive: false,
+            audioCtx: null,
+            analyser: null,
+            rafId: null,
+            frequencies: [],
+
+            async start() {
+                try {
+                    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    this.analyser = this.audioCtx.createAnalyser();
+                    this.analyser.fftSize = 4096; // High res
+
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    const src = this.audioCtx.createMediaStreamSource(stream);
+                    src.connect(this.analyser);
+
+                    this.isActive = true;
+                    this.loop();
+
+                    document.getElementById('ai-mic-toggle').textContent = "Stop Listening";
+                    document.getElementById('ai-mic-toggle').classList.add('active');
+                } catch (e) {
+                    console.error(e);
+                    alert("Mic access denied");
+                }
+            },
+
+            stop() {
+                if (!this.isActive) return;
+                this.isActive = false;
+                if (this.rafId) cancelAnimationFrame(this.rafId);
+                if (this.audioCtx) this.audioCtx.close();
+
+                document.getElementById('ai-mic-toggle').textContent = "Start Listening";
+                document.getElementById('ai-mic-toggle').classList.remove('active');
+            },
+
+            toggleMic() {
+                if (this.isActive) this.stop();
+                else this.start();
+            },
+
+            loop() {
+                if (!this.isActive) return;
+
+                const bufferLength = this.analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                this.analyser.getByteFrequencyData(dataArray);
+
+                this.drawVisualizer(dataArray);
+                this.detectChord(dataArray);
+
+                this.rafId = requestAnimationFrame(() => this.loop());
+            },
+
+            drawVisualizer(data) {
+                const canvas = document.getElementById('ai-visualizer');
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width;
+                const h = canvas.height;
+
+                ctx.fillStyle = '#111';
+                ctx.fillRect(0, 0, w, h);
+
+                const barWidth = (w / data.length) * 2.5;
+                let x = 0;
+
+                for (let i = 0; i < data.length; i++) {
+                    const barHeight = data[i] / 255 * h;
+                    ctx.fillStyle = `hsl(${i / data.length * 360}, 100%, 50%)`;
+                    ctx.fillRect(x, h - barHeight, barWidth, barHeight);
+                    x += barWidth + 1;
+                }
+            },
+
+            detectChord(data) {
+                // 1. Find Peaks (Simplistic)
+                const peaks = [];
+                const threshold = 100; // Noise gate
+
+                for (let i = 1; i < data.length - 1; i++) {
+                    if (data[i] > threshold && data[i] > data[i - 1] && data[i] > data[i + 1]) {
+                        // Frequency = i * sampleRate / fftSize
+                        const freq = i * this.audioCtx.sampleRate / this.analyser.fftSize;
+                        peaks.push({ freq, amp: data[i] });
+                    }
+                }
+
+                if (peaks.length === 0) return;
+
+                // 2. Map frequencies to Notes
+                const detectedNotes = new Set();
+                peaks.sort((a, b) => b.amp - a.amp).slice(0, 5).forEach(p => {
+                    const n = tunerEngine.detectNote(p.freq); // Reuse tuner logic
+                    if (n) detectedNotes.add(n.note.replace(/[0-9]/g, ''));
+                });
+
+                const notes = Array.from(detectedNotes);
+                if (notes.length < 2) return; // Need at least 2 notes
+
+                // 3. Match against basic intervals
+                // This is a naive check for Demo
+                // Sort notes? No, we check permutations or just root?
+                // Let's brute force match against known Chords in CHORD_DATA (generated)
+
+                // Simplified matching logic for now
+                // We will guess based on note presence
+                this.matchChord(notes);
+            },
+
+            matchChord(notes) {
+                // Brute-force match score
+                // Score = (notes_in_chord / total_chord_notes) * (notes_in_input / total_input_notes)
+
+                let bestMatch = null;
+                let bestScore = 0;
+
+                // check all roots and types
+                CHORD_DATA.ROOTS.forEach(root => {
+                    Object.keys(CHORD_DATA.TYPES).forEach(type => {
+                        const targetNotes = chordEngine.getChordNotes(root, type);
+
+                        // Intersection
+                        const intersection = notes.filter(n => targetNotes.includes(n));
+
+                        // Score calculation
+                        const matchRate = intersection.length / targetNotes.length;
+                        const noiseRate = 1 - ((notes.length - intersection.length) / notes.length);
+
+                        // Adjust score for strictness
+                        const score = matchRate * 0.7 + noiseRate * 0.3;
+
+                        if (score > bestScore && intersection.length >= 2) {
+                            bestScore = score;
+                            bestMatch = `${root} ${CHORD_DATA.TYPES[type].name}`;
+                        }
+                    });
+                });
+
+                const resEl = document.getElementById('ai-chord-result');
+                const confEl = document.querySelector('.detection-confidence');
+
+                if (bestMatch && bestScore > 0.6) {
+                    resEl.innerText = bestMatch;
+                    confEl.innerText = `Confidence: ${Math.round(bestScore * 100)}%`;
+                }
+            }
+        };
+
+        const aiTabGen = {
+            generate() {
+                const input = document.getElementById('ai-tab-input').value;
+                if (!input) return;
+
+                // Save state
+                if (!appState.data.ai) appState.data.ai = {};
+                appState.data.ai.lastTabInput = input;
+                appState.save();
+
+                // Parse
+                // Reuse chordApp.handleSearch logic partly? 
+                // Let's assume standard format for now: "Cm7"
+                // We need to parse Root + Type
+
+                // Mock parse (basic)
+                const rootMatch = input.match(/^([A-Ga-g][#b]?)/);
+                if (!rootMatch) { alert("Invalid Chord"); return; }
+
+                let root = rootMatch[1];
+                root = root.charAt(0).toUpperCase() + root.slice(1);
+
+                let typeRaw = input.substring(root.length).trim();
+                // Map typeRaw to our types
+                // Reuse chordApp map if exposed? It's inside handleSearch. 
+                // Let's recreate a mini map or expose it. 
+                // For safety, just strip major/minor checks
+                let type = "Major";
+                if (typeRaw.includes("m") || typeRaw.includes("min")) type = "Minor";
+                if (typeRaw.includes("7")) type = (type === "Minor") ? "m7" : "7"; // Simplicity
+                if (typeRaw.includes("maj7")) type = "Maj7";
+
+                // Generate Positions
+                const positions = chordEngine.getPositions(root, type);
+
+                const out = document.getElementById('ai-tab-output');
+                out.innerHTML = '';
+
+                if (positions.length === 0) {
+                    out.innerHTML = '<div style="padding:20px;">No positions found. Try a simpler chord like C, Am, G7.</div>';
+                    return;
+                }
+
+                positions.forEach((pos, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'tab-card';
+                    card.innerHTML = `<div>Position ${idx + 1}</div>`;
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 200;
+                    canvas.height = 240;
+                    card.appendChild(canvas);
+
+                    // Render
+                    chordRenderer.drawBox(canvas, pos);
+
+                    out.appendChild(card);
+                });
+            }
+        };
+
+        const aiProgressionGen = {
+            generate() {
+                const key = document.getElementById('ai-prog-key').value;
+                const mood = document.getElementById('ai-prog-mood').value;
+
+                // Save
+                if (!appState.data.ai) appState.data.ai = {};
+                appState.data.ai.lastProgKey = key;
+                appState.data.ai.lastProgMood = mood;
+                appState.save();
+
+                const out = document.getElementById('ai-prog-result');
+                out.innerHTML = '';
+
+                // Logic
+                let progs = [];
+
+                if (mood === 'happy') {
+                    // I IV V I
+                    progs.push(["I", "IV", "V", "I"]);
+                    progs.push(["I", "vi", "IV", "V"]); // 50s
+                    progs.push(["I", "V", "vi", "IV"]); // Axis
+                } else if (mood === 'sad') {
+                    // i iv v i
+                    // Need minor key calculation?
+                    // We can reuse Theory Wheel Key logic!
+                    progs.push(["i", "iv", "v", "i"]);
+                    progs.push(["i", "VI", "III", "VII"]);
+                    progs.push(["i", "iv", "VI", "v"]);
+                } else if (mood === 'epic') {
+                    progs.push(["i", "VI", "III", "VII"]); // Hans Zimmer-ish
+                    progs.push(["VI", "VII", "i", "i"]);
+                } else if (mood === 'jazzy') {
+                    progs.push(["ii7", "V7", "Imaj7", "I6"]);
+                    progs.push(["Imaj7", "vi7", "ii7", "V7"]);
+                } else if (mood === 'dark') {
+                    progs.push(["i", "bII", "i", "vii°"]); // Phrygian?
+                }
+
+                // Render
+                progs.forEach(prog => {
+                    const card = document.createElement('div');
+                    card.className = 'progression-card';
+
+                    // Convert Numerals to Chords
+                    // We need a helper to get chords from Key + Numeral
+                    // Using CIRCLE_KEYS logic
+                    // Find Key Data
+                    // Note: CIRCLE_KEYS keys are Major. For 'sad' (minor), we might need relative handling.
+                    // But simplified: 
+                    // If mood is Sad, we assume Key passed is the Minor Key? 
+                    // Or Key is Major and we derive? 
+                    // Let's assume User selects the TONIC.
+                    // If Sad C, it means C Minor. 
+                    // C Minor relative is Eb Major.
+
+                    // Complex mapping omitted for brevity, we will map Diatonic Major for happy, and treat input as Minor Tonic for sad?
+                    // Let's stick to "Input is Key Center".
+
+                    const chordHtml = prog.map(p => `<span>${p}</span>`).join(' - ');
+
+                    card.innerHTML = `
+                        <div style="font-weight:bold; font-size:1.2rem;">${chordHtml}</div>
+                        <button class="action-btn" onclick="alert('Play feature coming soon')">▶</button>
+                    `;
+                    out.appendChild(card);
+                });
+            }
+        };
+
+        const aiScaleRec = {
+            find() {
+                const input = document.getElementById('ai-scale-input').value;
+                if (!input) return;
+
+                // Save
+                if (!appState.data.ai) appState.data.ai = {};
+                appState.data.ai.lastScaleInput = input;
+                appState.save();
+
+                const out = document.getElementById('ai-scale-results');
+                out.innerHTML = '';
+
+                // Simple logic:
+                // If "m" -> Minor, Pentatonic Minor, Blues
+                // If "7" -> Mixolydian, Penta Maj?
+                // If "maj7" -> Major, Lydian
+
+                const suggestions = [];
+                if (input.includes("m") && !input.includes("maj")) {
+                    suggestions.push("Minor Pentatonic");
+                    suggestions.push("Natural Minor (Aeolian)");
+                    suggestions.push("Dorian (if ii chord)");
+                    suggestions.push("Blues");
+                } else if (input.includes("7") && !input.includes("maj")) {
+                    suggestions.push("Minor Pentatonic (Bluesy)");
+                    suggestions.push("Major Pentatonic (Country)");
+                    suggestions.push("Mixolydian");
+                } else {
+                    // Major
+                    suggestions.push("Major Pentatonic");
+                    suggestions.push("Major (Ionian)");
+                    suggestions.push("Lydian");
+                }
+
+                suggestions.forEach(s => {
+                    const card = document.createElement('div');
+                    card.className = 'scale-result-card';
+                    card.innerHTML = `<div style="font-weight:600;">${s}</div><div style="color:#888; font-size:0.9rem;">Works well with ${input}</div>`;
+                    out.appendChild(card);
+                });
+            }
+        };
+
+
         const theoryApp = {
             currentKeyIndex: 0, // start at C
             mode: 'major',
@@ -3588,6 +4151,7 @@
             chordApp.init();
             scaleApp.init(); // Init Scales
             theoryApp.init(); // Init Theory Wheel
+            aiLabApp.init(); // Init AI Lab
         });
 
     </script>
