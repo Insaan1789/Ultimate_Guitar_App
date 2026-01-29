@@ -1452,14 +1452,85 @@
             <!-- Jam Section -->
             <section id="jam">
                 <header class="section-header">
-                    <h1 class="section-title">Jam</h1>
-                    <p class="section-subtitle">Play along with your favorite tracks.</p>
+                    <h1 class="section-title">Jam Mode</h1>
+                    <p class="section-subtitle">Generate custom backing tracks and record your ideas.</p>
                 </header>
-                <div class="card-grid">
-                    <div class="card">
-                        <h3>Library</h3>
-                        <p>Access your saved tabs and backing tracks.</p>
+
+                <div class="jam-container"
+                    style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px;">
+
+                    <!-- 1. Control Panel -->
+                    <div class="jam-controls-panel card"
+                        style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: center;">
+                        <div class="control-group">
+                            <label class="info-label">Style</label>
+                            <select id="jam-style" class="tuner-select" onchange="jamApp.setStyle(this.value)">
+                                <option value="rock">Rock</option>
+                                <option value="blues">Blues</option>
+                                <option value="funk">Funk</option>
+                                <option value="jazz">Jazz</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label class="info-label">Key</label>
+                            <select id="jam-key" class="tuner-select" onchange="jamApp.setKey(this.value)">
+                                <option value="C">C</option>
+                                <option value="G">G</option>
+                                <option value="D">D</option>
+                                <option value="A">A</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                                <option value="Bb">Bb</option>
+                                <option value="Eb">Eb</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label class="info-label">Tempo: <span id="jam-bpm-val"
+                                    style="color:var(--accent-primary)">100</span></label>
+                            <input type="range" id="jam-tempo" min="60" max="180" value="100"
+                                oninput="jamApp.setTempo(this.value)">
+                        </div>
                     </div>
+
+                    <!-- 2. Live View (Visualizer) -->
+                    <div class="jam-live-view"
+                        style="background:#111; border-radius:12px; padding:20px; text-align:center; min-height:150px; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden;">
+                        <canvas id="jam-visualizer"
+                            style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0.3; pointer-events:none;"></canvas>
+
+                        <div style="position:relative; z-index:2;">
+                            <div class="info-label">Now Playing</div>
+                            <div id="jam-chord-display"
+                                style="font-size:4rem; font-weight:bold; color:#fff; text-shadow:0 0 10px rgba(0,255,0,0.5);">
+                                --</div>
+                            <div id="jam-scale-display"
+                                style="color:var(--accent-primary); font-size:1.2rem; margin-top:5px;">--</div>
+                        </div>
+
+                        <div class="next-chord"
+                            style="position:absolute; right:20px; bottom:20px; text-align:right; opacity:0.7;">
+                            <div class="info-label" style="font-size:0.8rem;">Next</div>
+                            <div id="jam-next-chord" style="font-size:1.5rem; font-weight:bold;">--</div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Transport Bar -->
+                    <div class="jam-transport" style="display:flex; justify-content:center; gap:20px; padding:10px;">
+                        <button class="action-btn" id="jam-play-btn" onclick="jamApp.togglePlay()"
+                            style="width:120px; font-size:1.2rem;">&#9658; PLAY</button>
+                        <button class="action-btn" id="jam-rec-btn" onclick="jamApp.toggleRecord()"
+                            style="width:120px; background:#444;">&#9679; REC</button>
+                    </div>
+
+                    <!-- 4. Recordings -->
+                    <div class="jam-recordings card">
+                        <h3>Session Recordings</h3>
+                        <div id="jam-recordings-list"
+                            style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+                            <div style="color:#666; font-style:italic;">No recordings yet. Hit REC to start.</div>
+                        </div>
+                    </div>
+
                 </div>
             </section>
             <!-- Profile Section -->
@@ -3959,6 +4030,363 @@
         };
 
 
+        const jamApp = {
+            isPlaying: false,
+            isRecording: false,
+            style: 'rock',
+            key: 'C',
+            tempo: 100,
+
+            init() {
+                const s = appState.data.jam || {};
+                this.style = s.style || 'rock';
+                this.key = s.key || 'C';
+                this.tempo = s.tempo || 100;
+
+                // Restore UI
+                document.getElementById('jam-style').value = this.style;
+                document.getElementById('jam-key').value = this.key;
+                document.getElementById('jam-tempo').value = this.tempo;
+                document.getElementById('jam-bpm-val').innerText = this.tempo;
+            },
+
+            setStyle(val) {
+                this.style = val;
+                this.saveState();
+                if (this.isPlaying) jamEngine.restart();
+            },
+
+            setKey(val) {
+                this.key = val;
+                this.saveState();
+                // Update Scale Display immediately
+                this.updateDisplay('I', 'Major');
+            },
+
+            setTempo(val) {
+                this.tempo = parseInt(val);
+                document.getElementById('jam-bpm-val').innerText = this.tempo;
+                jamEngine.bpm = this.tempo;
+                this.saveState();
+            },
+
+            togglePlay() {
+                if (this.isPlaying) {
+                    jamEngine.stop();
+                    this.isPlaying = false;
+                    document.getElementById('jam-play-btn').innerHTML = "&#9658; PLAY";
+                    document.getElementById('jam-play-btn').classList.remove('active');
+                } else {
+                    jamEngine.start();
+                    this.isPlaying = true;
+                    document.getElementById('jam-play-btn').innerHTML = "&#9632; STOP";
+                    document.getElementById('jam-play-btn').classList.add('active');
+                }
+            },
+
+            toggleRecord() {
+                if (this.isRecording) {
+                    jamEngine.stopRecording();
+                    this.isRecording = false;
+                    document.getElementById('jam-rec-btn').innerHTML = "&#9679; REC";
+                    document.getElementById('jam-rec-btn').classList.remove('active');
+                    document.getElementById('jam-rec-btn').style.background = "#444";
+                } else {
+                    jamEngine.startRecording();
+                    this.isRecording = true;
+                    document.getElementById('jam-rec-btn').innerHTML = "&#9632; STOP REC";
+                    document.getElementById('jam-rec-btn').classList.add('active');
+                    document.getElementById('jam-rec-btn').style.background = "#FF5252";
+
+                    // Auto play if not playing
+                    if (!this.isPlaying) this.togglePlay();
+                }
+            },
+
+            saveState() {
+                if (!appState.data.jam) appState.data.jam = {};
+                appState.data.jam.style = this.style;
+                appState.data.jam.key = this.key;
+                appState.data.jam.tempo = this.tempo;
+                appState.save();
+            },
+
+            updateDisplay(chord, type) {
+                // Update Now Playing
+                document.getElementById('jam-chord-display').innerText = `${this.key} ${type === 'Major' ? '' : type}`;
+                document.getElementById('jam-scale-display').innerText = `Scale: ${this.key} ${jamApp.style === 'blues' ? 'Blues' : 'Pentatonic'}`;
+            },
+
+            addRecording(blob) {
+                const url = URL.createObjectURL(blob);
+                const list = document.getElementById('jam-recordings-list');
+
+                // Remove placeholder
+                if (list.children.length > 0 && list.children[0].style.fontStyle === 'italic') {
+                    list.innerHTML = '';
+                }
+
+                const item = document.createElement('div');
+                item.className = 'card';
+                item.style.padding = "10px";
+                item.style.display = "flex";
+                item.style.alignItems = "center";
+                item.style.gap = "10px";
+
+                const audio = document.createElement('audio');
+                audio.controls = true;
+                audio.src = url;
+                audio.style.height = "30px";
+                audio.style.flex = "1";
+
+                const date = new Date().toLocaleTimeString();
+
+                const label = document.createElement('div');
+                label.innerText = `Jam ${date}`;
+                label.style.fontSize = "0.8rem";
+
+                // Download
+                const downBtn = document.createElement('a');
+                downBtn.href = url;
+                downBtn.download = `Jam-${date}.webm`;
+                downBtn.innerText = "⬇";
+                downBtn.className = "action-btn";
+                downBtn.style.padding = "5px 10px";
+
+                item.appendChild(label);
+                item.appendChild(audio);
+                item.appendChild(downBtn);
+                list.prepend(item);
+            }
+        };
+
+        const jamEngine = {
+            audioCtx: null,
+            nextNoteTime: 0.0,
+            timerID: null,
+            isPlaying: false,
+            bpm: 100,
+            lookahead: 25.0,
+            scheduleAheadTime: 0.1,
+
+            // Recorder
+            destNode: null,
+            mediaRecorder: null,
+            chunks: [],
+
+            // State
+            currentBeat: 0,
+            currentBar: 0,
+
+            // Instruments
+            masterGain: null,
+
+            start() {
+                if (this.isPlaying) return;
+
+                if (!this.audioCtx) {
+                    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+
+                // Master
+                this.masterGain = this.audioCtx.createGain();
+                this.masterGain.gain.value = 0.5;
+                this.masterGain.connect(this.audioCtx.destination);
+
+                // Hook for Recorder
+                this.destNode = this.audioCtx.createMediaStreamDestination();
+                this.masterGain.connect(this.destNode);
+
+                this.isPlaying = true;
+                this.bpm = jamApp.tempo;
+                this.currentBeat = 0;
+                this.currentBar = 0;
+                this.nextNoteTime = this.audioCtx.currentTime + 0.1;
+
+                this.scheduler();
+            },
+
+            stop() {
+                this.isPlaying = false;
+                window.clearTimeout(this.timerID);
+                if (jamApp.isRecording) jamApp.toggleRecord(); // Stop rec if playing stops
+            },
+
+            restart() {
+                if (this.isPlaying) {
+                    this.stop();
+                    setTimeout(() => this.start(), 100);
+                }
+            },
+
+            startRecording() {
+                if (!this.audioCtx) return;
+                this.chunks = [];
+                this.mediaRecorder = new MediaRecorder(this.destNode.stream);
+                this.mediaRecorder.ondataavailable = (e) => this.chunks.push(e.data);
+                this.mediaRecorder.onstop = (e) => {
+                    const blob = new Blob(this.chunks, { 'type': 'audio/ogg; codecs=opus' });
+                    jamApp.addRecording(blob);
+                };
+                this.mediaRecorder.start();
+            },
+
+            stopRecording() {
+                if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+                    this.mediaRecorder.stop();
+                }
+            },
+
+            scheduler() {
+                while (this.nextNoteTime < this.audioCtx.currentTime + this.scheduleAheadTime) {
+                    this.scheduleBeat(this.currentBeat, this.nextNoteTime);
+                    this.nextNote();
+                }
+                if (this.isPlaying) {
+                    this.timerID = window.setTimeout(() => this.scheduler(), this.lookahead);
+                }
+            },
+
+            nextNote() {
+                const secondsPerBeat = 60.0 / this.bpm;
+                this.nextNoteTime += secondsPerBeat; // Quarter notes
+                this.currentBeat++;
+                if (this.currentBeat >= 4) {
+                    this.currentBeat = 0;
+                    this.currentBar++;
+                }
+            },
+
+            scheduleBeat(beat, time) {
+                // Determine Chord from Progression
+                // Simple I - IV - V - I for demo
+                const prog = [1, 4, 5, 1]; // I IV V I
+                const chordIdx = Math.floor(this.currentBar / 2) % 4; // 2 bars per chord
+                const degree = prog[chordIdx];
+
+                // Get Frequencies based on Key + Degree
+                // Simplification for V1: Just offset from Root
+                // Root Freq
+                const rootFreq = tunerEngine.getNoteFreq(jamApp.key + "3"); // C3, G3 etc.
+
+                // Calculate scale degree freq
+                // Major Scale
+                const scaleSteps = [0, 2, 4, 5, 7, 9, 11];
+                const semi = scaleSteps[degree - 1]; // 0 for I, 5 for IV, 7 for V
+                const chordRootFreq = rootFreq * Math.pow(2, semi / 12);
+
+                // UI Update on Beat 0
+                if (beat === 0 && this.currentBar % 2 === 0) {
+                    // Main thread update (might be slightly off sync but okay for UI)
+                    const chordName = degree === 1 ? 'I' : degree === 4 ? 'IV' : 'V';
+                    requestAnimationFrame(() => {
+                        jamApp.updateDisplay(chordName, 'Major');
+                        document.getElementById('jam-next-chord').innerText = (degree === 1 || degree === 5) ? 'IV' : (degree === 4) ? 'V' : 'I';
+                    });
+                }
+
+                this.playDrums(beat, time);
+                this.playBass(beat, time, chordRootFreq);
+                this.playChord(beat, time, chordRootFreq);
+            },
+
+            playDrums(beat, time) {
+                // Simple Rock Beat
+                const snare = (beat === 1 || beat === 3);
+                const kick = (beat === 0 || beat === 2 || (beat === 2.5)); // Syncopated kick?
+
+                if (beat === 0 || beat === 2) { // Kick
+                    const osc = this.audioCtx.createOscillator();
+                    const gain = this.audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.masterGain);
+
+                    osc.frequency.setValueAtTime(150, time);
+                    osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
+
+                    gain.gain.setValueAtTime(1, time);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+
+                    osc.start(time);
+                    osc.stop(time + 0.5);
+                }
+
+                if (beat === 1 || beat === 3) { // Snare (Noise)
+                    const bufferSize = this.audioCtx.sampleRate * 0.1; // 100ms
+                    const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+
+                    const noise = this.audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+                    const gain = this.audioCtx.createGain();
+                    noise.connect(gain);
+                    gain.connect(this.masterGain);
+
+                    gain.gain.setValueAtTime(0.5, time);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+                    noise.start(time);
+                }
+
+                // Hi-hat (8ths) - cheat, reuse noise with filter? OR just short tick
+                // ...
+            },
+
+            playBass(beat, time, rootFreq) {
+                // Root notes on 1 and 3
+                if (beat === 0 || beat === 2) {
+                    const osc = this.audioCtx.createOscillator();
+                    osc.type = 'sawtooth';
+                    const gain = this.audioCtx.createGain();
+                    const filter = this.audioCtx.createBiquadFilter();
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(this.masterGain);
+
+                    osc.frequency.value = rootFreq / 2; // Octave down
+                    filter.frequency.value = 400;
+
+                    gain.gain.setValueAtTime(0.4, time);
+                    gain.gain.setTargetAtTime(0, time, 0.1);
+
+                    osc.start(time);
+                    osc.stop(time + 0.5);
+                }
+            },
+
+            playChord(beat, time, rootFreq) {
+                // Pad on beat 0
+                if (beat === 0) {
+                    // Major Triad (Root, 3rd, 5th)
+                    const freqs = [
+                        rootFreq,
+                        rootFreq * Math.pow(2, 4 / 12),
+                        rootFreq * Math.pow(2, 7 / 12)
+                    ];
+
+                    freqs.forEach(f => {
+                        const osc = this.audioCtx.createOscillator();
+                        osc.type = 'triangle';
+                        const gain = this.audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.masterGain);
+
+                        osc.frequency.value = f;
+                        gain.gain.setValueAtTime(0.1, time);
+                        gain.gain.setTargetAtTime(0, time + 2, 0.5); // Fade out over bar
+
+                        osc.start(time);
+                        osc.stop(time + 4); // Full bar
+                    });
+                }
+            }
+        };
+
+
         const theoryApp = {
             currentKeyIndex: 0, // start at C
             mode: 'major',
@@ -4152,6 +4580,7 @@
             scaleApp.init(); // Init Scales
             theoryApp.init(); // Init Theory Wheel
             aiLabApp.init(); // Init AI Lab
+            jamApp.init(); // Init Jam Mode
         });
 
     </script>
